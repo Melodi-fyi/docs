@@ -1,4 +1,5 @@
 {
+  "openapi": ["/openapi.yaml"],
   "$schema": "https://mintlify.com/schema.json",
   "name": "Starter Kit",
   "logo": {
@@ -77,9 +78,9 @@
     {
       "group": "Endpoint Examples",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/get-all-experiments",
+        "api-reference/create-a-new-experiment",
+        "api-reference/create-one-or-more-logs"
       ]
     }
   ],
