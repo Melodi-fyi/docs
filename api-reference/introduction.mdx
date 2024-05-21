@@ -1,33 +1,16 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'API access to Melodi'
 ---
-
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
 
 ## Welcome
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
-
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+To access our external apis you’ll need an api key. You’ll need to use your private (as opposed to publishable) api key for these apis. You can find or generate an api key under settings in the Melodi App.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+![Melodi API Key Settings](/images/Melodi-API-key-settings.png)
+
+https://app.melodi.fyi/admin/settings
+
+The api key is passed as a query parameter when making calls to the api. For example `https://app.melodi.fyi/api/external/experiments/1/feedback?apiKey=abc-123`

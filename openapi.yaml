@@ -106,6 +106,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /feedback:
+    post:
+      summary: Create user feedback
+      description: This API can be used instead of our Feedback UI component (thumbs up/down) to create feedbacks that will be visible in the Feedback Inbox.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackCreateRequest'
+      responses:
+        '200':
+          description: Feedback successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalFeedback'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -277,3 +315,76 @@ components:
       properties:
         error:
           type: string
+
+    FeedbackCreateRequest:
+      type: object
+      required:
+        - sample
+        - feedback
+      properties:
+        sample:
+          $ref: '#/components/schemas/Sample'
+        feedback:
+          $ref: '#/components/schemas/Feedback'
+        user:
+          $ref: '#/components/schemas/UserInfo'
+    ExternalFeedback:
+      type: object
+      properties:
+        id:
+          type: string
+        feedbackType:
+          type: string
+        feedbackText:
+          type: string
+        userId:
+          type: string
+          nullable: true
+    Sample:
+      type: object
+      properties:
+        project:
+          type: string
+          nullable: true
+        projectVersion:
+          type: string
+          nullable: true
+        input:
+          type: string
+          nullable: true
+        output:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/JSONObject'
+    Feedback:
+      type: object
+      properties:
+        feedbackType:
+          type: string
+          enum:
+            - POSITIVE
+            - NEGATIVE
+        feedbackText:
+          type: string
+          nullable: true
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        email:
+          type: string
+    JSONObject:
+      type: object
+      additionalProperties:
+        oneOf:
+          - type: string
+          - type: number
+          - type: boolean
+          - $ref: '#/components/schemas/JSONObject'
+          - $ref: '#/components/schemas/JSONArray'
+    JSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/JSONObject'

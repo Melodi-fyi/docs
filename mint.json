@@ -1,30 +1,30 @@
 {
   "openapi": ["/openapi.yaml"],
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Melodi API",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/images/melodi logo.png",
+    "light": "/images/melodi logo.png"
   },
-  "favicon": "/melodi-favicon.svg",
+  "favicon": "/melodi-favicon.png",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#00A884",
+    "light": "#80E0C1",
+    "dark": "#007359",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#80E0C1",
+      "to": "#007359"
     }
   },
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:info@melodi.com"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Log in",
+    "url": "https://app.melodi.fyi"
   },
   "tabs": [
     {
@@ -32,41 +32,11 @@
       "url": "api-reference"
     }
   ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
   "navigation": [
     {
       "group": "Get Started",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "introduction"
       ]
     },
     {
@@ -76,17 +46,27 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Experiments",
       "pages": [
         "api-reference/get-all-experiments",
-        "api-reference/create-a-new-experiment",
+        "api-reference/create-a-new-experiment"
+      ]
+    },
+    {
+      "group": "Logs",
+      "pages": [
         "api-reference/create-one-or-more-logs"
+      ]
+    },
+    {
+      "group": "Feedback",
+      "pages": [
+        "api-reference/create-feedback"
       ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "github": "https://github.com/melodi-fyi",
+    "linkedin": "https://www.linkedin.com/company/melodi-fyi"
   }
 }
