@@ -63,6 +63,12 @@
       "pages": [
         "api-reference/create-feedback"
       ]
+    },
+        {
+      "group": "Threads",
+      "pages": [
+        "api-reference/get-all-threads"
+      ]
     }
   ],
   "footerSocials": {
