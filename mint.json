@@ -26,49 +26,13 @@
     "name": "Log in",
     "url": "https://app.melodi.fyi"
   },
-  "primaryTab": {
-    "name": "Home"
-},
   "navigation": [
     {
       "group": "Getting Started",
       "pages": [
-        "What is Melodi?",
-        "Quickstart",
-        "Data privacy"
-      ]
-    },
-    {
-      "group": "Logging data to Melodi",
-      "pages": [
-        "Getting started",
-        "API access",
-        "Python SDK",
-        "Typescript SDK",
-        "Create thread",
-        "Create feedback",
-        "Create user",
-        "Create project"
-      ]
-    },
-    {
-      "group": "Product analytics",
-      "pages": [
-        "Understanding user metrics",
-        "Managing user feedback",
-        "Setting up intents"
-      ]
-    },
-    {
-      "group": "Expert review",
-      "pages": [
-        "Getting started with expert review"
-      ]
-    },
-    {
-      "group": "Datasets",
-      "pages": [
-        "Getting started with datasets"
+        "pages/what-is-melodi",
+        "pages/quickstart",
+        "pages/data-privacy"
       ]
     }
   ],
