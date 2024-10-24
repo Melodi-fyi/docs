@@ -37,8 +37,9 @@
     },
     {
       "group": "Logging data to Melodi",
-      "pages:" [
-        "Overview",
+      "pages": [
+        "Getting started",
+        "API access",
         "Python SDK",
         "Typescript SDK",
         "Create thread",
@@ -49,8 +50,7 @@
     },
     {
       "group": "Product analytics",
-      "pages:" [
-        "Overview",
+      "pages": [
         "Understanding user metrics",
         "Managing user feedback",
         "Setting up intents"
@@ -58,16 +58,16 @@
     },
     {
       "group": "Expert review",
-      "pages:" [
-        "Overview"
+      "pages": [
+        "Getting started with expert review"
       ]
     },
     {
       "group": "Datasets",
-      "pages:" [
-        "Overview"
+      "pages": [
+        "Getting started with datasets"
       ]
-    },
+    }
   ],
   "footerSocials": {
     "github": "https://github.com/melodi-fyi",
