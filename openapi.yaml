@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Experiments API
-  description: API for managing experiments
+  title: Melodi API
+  description: API for managing Melodi resources such as threads, feedback, and users.
   version: 1.0.0
 servers:
   - url: https://app.melodi.fyi/api/external
@@ -9,12 +9,12 @@ servers:
 paths:
   /threads:
     get:
-      summary: Get all threads
+      summary: Retrieve all threads
       security:
          - ApiKeyAuth: []
       responses:
         '200':
-          description: A list of threads
+          description: Successfully retrieved list of threads
           content:
             application/json:
               schema:
@@ -25,6 +25,22 @@ paths:
           description: Unauthorized
         '500':
           description: Internal Server Error
+    post:
+      summary: Create a new thread
+      requestBody:
+        description: A thread object that needs to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Thread'
+      responses:
+        '201':
+          description: Thread successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Thread'
   /experiments:
     get:
       summary: Get all experiments
@@ -175,7 +191,63 @@ components:
       properties:
         id:
           type: number
-    
+          description: Unique identifier for the thread
+        externalId:
+          type: number
+          description: External thread ID
+        organizationId:
+          type: number
+          description: ID of the organization to which the thread belongs
+        projectId:
+          type: number
+          description: ID of the project to which the thread belongs
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: Array of messages associated with the thread
+        externalUserId:
+          type: number
+          description: ID of the external user linked to the thread
+        metadata:
+          type: object
+          description: Metadata associated with the thread
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+          description: Date when the thread was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date when the thread was last updated
+      required:
+        - id
+        - organizationId
+        - projectId
+        - createdAt
+        - updatedAt
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Unique identifier for the message
+        externalId:
+          type: string
+          description: External message ID
+        content:
+          type: string
+          description: Content of the message
+        role:
+          type: string
+          description: Role of the message sender (e.g., user, assistant)
+      required:
+        - id
+        - content
+
     Experiment:
       type: object
       properties:

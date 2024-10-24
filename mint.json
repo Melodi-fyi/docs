@@ -1,7 +1,7 @@
 {
   "openapi": ["/openapi.yaml"],
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Melodi API",
+  "name": "Melodi Docs",
   "logo": {
     "dark": "/images/melodi logo.png",
     "light": "/images/melodi logo.png"
@@ -36,7 +36,7 @@
       ]
     },
         {
-      "group": "Logging data to Melodi",
+      "group": "Logging Data to Melodi",
       "pages": [
         "pages/getting-started",
         "pages/api-access",
