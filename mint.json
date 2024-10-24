@@ -41,7 +41,7 @@
         "pages/getting-started",
         "pages/api-access",
         "api-reference/python-sdk",
-        "api-reference/python-sdk"
+        "api-reference/typescript-sdk"
       ]
     }
   ],
