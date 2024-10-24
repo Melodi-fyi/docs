@@ -26,6 +26,9 @@
     "name": "Log in",
     "url": "https://app.melodi.fyi"
   },
+  "primaryTab": {
+    "name": "Home"
+},
   "navigation": [
     {
       "group": "Getting Started",
