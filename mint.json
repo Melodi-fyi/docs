@@ -16,6 +16,12 @@
       "to": "#007359"
     }
   },
+  "api": {
+    "baseUrl": "https://app.melodi.fyi/api",
+    "auth": {
+      "method": "key"
+    }
+  },
   "topbarLinks": [
     {
       "name": "Support",
