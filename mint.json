@@ -26,15 +26,9 @@
     "name": "Log in",
     "url": "https://app.melodi.fyi"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Getting Started",
       "pages": [
         "introduction"
       ]
