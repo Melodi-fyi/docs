@@ -30,40 +30,44 @@
     {
       "group": "Getting Started",
       "pages": [
-        "introduction"
+        "What is Melodi?",
+        "Quickstart",
+        "Data privacy"
       ]
     },
     {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
+      "group": "Logging data to Melodi",
+      "pages:" [
+        "Overview",
+        "Python SDK",
+        "Typescript SDK",
+        "Create thread",
+        "Create feedback",
+        "Create user",
+        "Create project"
       ]
     },
     {
-      "group": "Experiments",
-      "pages": [
-        "api-reference/get-all-experiments",
-        "api-reference/create-a-new-experiment"
+      "group": "Product analytics",
+      "pages:" [
+        "Overview",
+        "Understanding user metrics",
+        "Managing user feedback",
+        "Setting up intents"
       ]
     },
     {
-      "group": "Logs",
-      "pages": [
-        "api-reference/create-one-or-more-logs"
+      "group": "Expert review",
+      "pages:" [
+        "Overview"
       ]
     },
     {
-      "group": "Feedback",
-      "pages": [
-        "api-reference/create-feedback"
+      "group": "Datasets",
+      "pages:" [
+        "Overview"
       ]
     },
-        {
-      "group": "Threads",
-      "pages": [
-        "api-reference/get-all-threads"
-      ]
-    }
   ],
   "footerSocials": {
     "github": "https://github.com/melodi-fyi",
