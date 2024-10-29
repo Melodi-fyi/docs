@@ -1,4 +1,107 @@
 ---
-title: 'Create thread'
-api: POST https://app.melodi.fyi/api/threads
+title: 'Create Thread'
+description: 'Create a new thread in Melodi.'
+api: POST https://app.melodi.fyi/api/external/threads
 ---
+
+import ExampleMessages from '/snippets/example-messages.mdx'
+
+## Body Parameters
+<Warning>
+  Note that either `projectId` or `projectName` must be provided.
+</Warning>
+
+<ParamField body="messages" type="array" required>
+  Array of message objects. Each message must have a role (string) and can optionally include:
+  - externalId (string)
+  - content (string)
+  - type ('markdown' or 'json', defaults to 'markdown')
+  - jsonContent (object, required if type is 'json')
+  - metadata (object with string values)
+</ParamField>
+
+<ExampleMessages />
+
+<ParamField body="projectId" type="number" optional>
+  ID of the project to which the thread belongs. Required if projectName is not provided.
+</ParamField>
+
+<ParamField body="projectName" type="string" optional>
+  Name of the project to which the thread belongs. Required if projectId is not provided.
+</ParamField>
+
+<ParamField body="externalId" type="string" optional>
+  External identifier for the thread
+</ParamField>
+
+<ParamField body="metadata" type="object" optional>
+  Metadata associated with the thread. All values must be strings.
+</ParamField>
+
+<ParamField body="externalUser" type="object" optional>
+  External user information. See CreateExternalUserRequest schema for details.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl --request POST \
+  --url https://app.melodi.fyi/api/external/threads \
+  --header 'API-key: <YOUR_API_KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "projectName": "Melodi SDK Test",
+    "externalId": "external-thread-id-1",
+    "messages": [
+      {
+        "externalId": "1",
+        "role": "user",
+        "content": "Hello!"
+      },
+      {
+        "externalId": "2",
+        "role": "AI assistant",
+        "content": "Hi! How can I help you today?"
+      },
+      {
+        "externalId": "3",
+        "role": "user",
+        "content": "What is your favorite color?"
+      },
+      {
+        "externalId": "4",
+        "role": "RAG lookup",
+        "type": "json",
+        "jsonContent": {
+          "favoriteColorInfo": {
+            "type": "color",
+            "color": "blue"
+          }
+        }
+      },
+      {
+        "externalId": "5",
+        "role": "AI assistant",
+        "content": "My favorite color is blue. Thanks so much for asking!"
+      }
+    ],
+    "externalUser": {
+      "externalId": "test-user-id-1",
+      "name": "Test User",
+      "email": "test-user@example.com",
+      "segments": {
+        "team": "engineering"
+      }
+    }
+  }'
+```
+</RequestExample>
+
+## Response fields
+
+<ResponseField name="id" type="string">
+  Unique identifier for the created thread
+</ResponseField>
+
+<ResponseField name="createdAt" type="string" format="date-time">
+  Date when the thread was created
+</ResponseField>

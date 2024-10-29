@@ -3,12 +3,7 @@ title: 'Python SDK'
 ---
 
 ## Initial set up
-Import required modules
-
-```python
-import sys
-!{sys.executable} -m pip install -r requirements.txt
-```
+Import required modules for Threads, Messages, Feedback, and Users.
 
 ```python
 from melodi.melodi_client import MelodiClient
@@ -17,7 +12,7 @@ from melodi.threads.data_models import Message, Thread
 from melodi.users.data_models import User
 ```
 
-## Set up Melodi client
+## Set up the Melodi client
 Your API key can be found in Settings. For more information, see [API Access](/pages/api-access).
 ```python
 import os
@@ -28,7 +23,7 @@ client = MelodiClient(verbose=True)
 ```
 
 ## Create a project
-Projects can also be created via the UI.
+Projects can also be created via the UI. Existing project IDs can be found in the URL e.g. `https://app.melodi.fyi/admin/users?projectId=708`
 ```python
 new_project = client.projects.create("Melodi SDK Test")
 
@@ -94,7 +89,7 @@ print(melodi_thread)
 
 This is how a thread will render in Melodi.
 
-*coming soon*
+![Thread Render](../images/render-thread.png)
 
 ## Add feedback to the thread
 ```python

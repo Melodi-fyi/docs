@@ -12,15 +12,88 @@ paths:
       summary: Retrieve all threads
       security:
          - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: ids
+          schema:
+            type: array
+            items:
+              type: integer
+          description: List of thread IDs to filter by
+        - in: query
+          name: externalUserIds
+          schema:
+            type: array
+            items:
+              type: integer
+          description: List of external user IDs to filter by
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Search term to filter threads
+        - in: query
+          name: userSearch
+          schema:
+            type: string
+          description: Search term to filter by user
+        - in: query
+          name: projectId
+          schema:
+            type: integer
+          description: ID of the project to filter threads by
+        - in: query
+          name: intentIds
+          schema:
+            type: array
+            items:
+              type: integer
+          description: List of intent IDs to filter by
+        - in: query
+          name: userSegmentIds
+          schema:
+            type: array
+            items:
+              type: integer
+          description: List of user segment IDs to filter by
+        - in: query
+          name: before
+          schema:
+            type: string
+            format: date-time
+          description: Filter threads created before this date
+        - in: query
+          name: after
+          schema:
+            type: string
+            format: date-time
+          description: Filter threads created after this date
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            default: 50
+          description: Number of threads to return per page
+        - in: query
+          name: pageIndex
+          schema:
+            type: integer
+            default: 0
+          description: Page index for pagination
       responses:
         '200':
           description: Successfully retrieved list of threads
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Thread'
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  rows:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Thread'
         '401':
           description: Unauthorized
         '500':
@@ -33,7 +106,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Thread'
+              $ref: '#/components/schemas/CreateThreadRequest'
       responses:
         '201':
           description: Thread successfully created
@@ -41,104 +114,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Thread'
-  /experiments:
-    get:
-      summary: Get all experiments
-      security:
-        - ApiKeyAuth: []
-      responses:
-        '200':
-          description: A list of experiments
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Experiment'
         '401':
           description: Unauthorized
         '500':
           description: Internal Server Error
-
-    post:
-      summary: Create a new experiment
-      security:
-        - ApiKeyAuth: []
+    put:
+      summary: Update an existing thread
       requestBody:
+        description: A thread object that needs to be updated
         required: true
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/CreateExperimentIDRequest'
-                - $ref: '#/components/schemas/CreateBinaryExperimentRequest'
-                - $ref: '#/components/schemas/CreateABTestRequest'
-      responses:
-        '201':
-          description: Experiment created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Experiment'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /logs:
-    post:
-      summary: Create one or more logs
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CreateLogRequest'
+              $ref: '#/components/schemas/CreateThreadRequest'
       responses:
         '200':
-          description: Logs created successfully
+          description: Thread successfully updated
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/LoggedSample'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Thread'
         '401':
           description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         '500':
           description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
 
   /feedback:
     post:
@@ -178,6 +177,68 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /projects:
+    get:
+      summary: Retrieve projects for an organization
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: organizationId
+          required: true
+          schema:
+            type: string
+          description: The ID of the organization to retrieve projects for
+      responses:
+        '200':
+          description: Successfully retrieved projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+    post:
+      summary: Create a new project
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectRequest'
+      responses:
+        '201':
+          description: Project successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -192,23 +253,30 @@ components:
         id:
           type: number
           description: Unique identifier for the thread
+          nullable: true
         externalId:
-          type: number
+          type: string
           description: External thread ID
+          nullable: true
         organizationId:
           type: number
           description: ID of the organization to which the thread belongs
         projectId:
           type: number
           description: ID of the project to which the thread belongs
+          nullable: true
+        projectName:
+          type: string
+          description: Name of the project to which the thread belongs
+          nullable: true
         messages:
           type: array
           items:
             $ref: '#/components/schemas/Message'
           description: Array of messages associated with the thread
-        externalUserId:
-          type: number
-          description: ID of the external user linked to the thread
+        externalUser:
+          $ref: '#/components/schemas/CreateExternalUserRequest'
+          nullable: true
         metadata:
           type: object
           description: Metadata associated with the thread
@@ -223,188 +291,56 @@ components:
           format: date-time
           description: Date when the thread was last updated
       required:
-        - id
-        - organizationId
-        - projectId
-        - createdAt
-        - updatedAt
+        - messages
+      anyOf:
+        - required: [projectId]
+        - required: [projectName]
 
     Message:
       type: object
       properties:
-        id:
-          type: number
-          description: Unique identifier for the message
         externalId:
           type: string
-          description: External message ID
-        content:
+          nullable: true
+        type:
           type: string
-          description: Content of the message
+          enum: ['markdown', 'json']
+          default: 'markdown'
+          description: "Defaults to 'markdown' if not provided or null"
         role:
           type: string
-          description: Role of the message sender (e.g., user, assistant)
-      required:
-        - id
-        - content
-
-    Experiment:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-
-    CreateExperimentIDRequest:
-      type: object
-      properties:
-        experiment:
-          $ref: '#/components/schemas/InternalExperimentEggNoSamplesNoComparisons'
-
-    CreateBinaryExperimentRequest:
-      type: object
-      properties:
-        experiment:
-          $ref: '#/components/schemas/InternalExperimentEgg'
-        samples:
-          type: array
-          items:
-            $ref: '#/components/schemas/InternalSampleEgg'
-
-    CreateABTestRequest:
-      type: object
-      properties:
-        experiment:
-          $ref: '#/components/schemas/InternalExperimentEggWithProject'
-        comparisons:
-          type: array
-          items:
-            $ref: '#/components/schemas/InternalComparisonEggWithVersion'
-
-    CreateLogRequest:
-      type: object
-      properties:
-        projectName:
+        content:
           type: string
           nullable: true
-        versionName:
-          type: string
-          nullable: true
-        data:
+        jsonContent:
           type: object
+          nullable: true
+          additionalProperties: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          default: {}
       required:
-        - data
-
-    LoggedSample:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the logged sample
-        data:
-          type: string
-          description: The log data
-        projectId:
-          type: string
-          description: The ID of the project
-        versionId:
-          type: string
-          description: The ID of the project version
-
-    InternalExperimentEggNoSamplesNoComparisons:
-      type: object
-      properties:
-        name:
-          type: string
-        projectId:
-          type: integer
-          nullable: true
-        instructions:
-          type: string
-          nullable: true
-
-    InternalExperimentEgg:
-      type: object
-      properties:
-        name:
-          type: string
-        instructions:
-          type: string
-          nullable: true
-        project:
-          type: string
-          nullable: true
-        version:
-          type: string
-          nullable: true
+        - role
+      # Validation rules matching the TypeScript refinements
       oneOf:
-        - not:
-            required:
-              - project
-        - required:
-            - project
-            - version
-
-    InternalExperimentEggWithProject:
-      type: object
-      properties:
-        name:
-          type: string
-        instructions:
-          type: string
-          nullable: true
-        project:
-          type: string
-        version:
-          type: string
-
-    InternalSampleEgg:
-      type: object
-      properties:
-        title:
-          type: string
-          nullable: true
-        message:
-          type: string
-          nullable: true
-        response:
-          type: string
-
-    InternalComparisonEgg:
-      type: object
-      properties:
-        samples:
-          type: array
-          items:
-            $ref: '#/components/schemas/InternalSampleEgg'
-
-    InternalComparisonEggWithVersion:
-      type: object
-      properties:
-        samples:
-          type: array
-          items:
-            $ref: '#/components/schemas/InternalSampleEggWithVersion'
-
-    InternalSampleEggWithVersion:
-      type: object
-      properties:
-        title:
-          type: string
-          nullable: true
-        message:
-          type: string
-          nullable: true
-        response:
-          type: string
-        version:
-          type: string
+        - properties:
+            type:
+              enum: ['markdown']
+            jsonContent:
+              not: {}
+        - properties:
+            type:
+              enum: ['json']
+            jsonContent:
+              type: object
+          required: ['jsonContent']
+      description: |
+        Message object with the following validation rules:
+        1. If type is 'json', jsonContent must be provided
+        2. If jsonContent is provided, type must be 'json'
+        3. type defaults to 'markdown' if not provided or null
 
     Error:
       type: object
@@ -414,16 +350,26 @@ components:
 
     FeedbackCreateRequest:
       type: object
-      required:
-        - sample
-        - feedback
       properties:
-        sample:
-          $ref: '#/components/schemas/Sample'
+        threadId:
+          type: string
+          description: ID of the thread containing the message being rated
+        messageId:
+          type: string
+          description: ID of the specific message being rated
         feedback:
           $ref: '#/components/schemas/Feedback'
+        suggestedChanges:
+          type: string
+          description: Optional proposed changes to the message content
+          nullable: true
         user:
           $ref: '#/components/schemas/UserInfo'
+      required:
+        - threadId
+        - messageId
+        - feedback
+
     ExternalFeedback:
       type: object
       properties:
@@ -433,25 +379,20 @@ components:
           type: string
         feedbackText:
           type: string
+        threadId:
+          type: string
+        messageId:
+          type: string
         userId:
           type: string
           nullable: true
-    Sample:
-      type: object
-      properties:
-        project:
+        suggestedChanges:
           type: string
           nullable: true
-        projectVersion:
+        createdAt:
           type: string
-          nullable: true
-        input:
-          type: string
-          nullable: true
-        output:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/JSONObject'
+          format: date-time
+
     Feedback:
       type: object
       properties:
@@ -463,6 +404,9 @@ components:
         feedbackText:
           type: string
           nullable: true
+      required:
+        - feedbackType
+
     UserInfo:
       type: object
       properties:
@@ -471,6 +415,9 @@ components:
           nullable: true
         email:
           type: string
+      required:
+        - email
+
     JSONObject:
       type: object
       additionalProperties:
@@ -484,3 +431,61 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/JSONObject'
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the project
+        name:
+          type: string
+          description: Name of the project
+        organizationId:
+          type: string
+          description: ID of the organization the project belongs to
+      required:
+        - id
+        - name
+        - organizationId
+
+    CreateProjectRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the project to be created
+      required:
+        - name
+
+    CreateThreadRequest:
+      type: object
+      properties:
+        id:
+          type: number
+          nullable: true
+        externalId:
+          type: string
+          nullable: true
+        projectId:
+          type: number
+          nullable: true
+        projectName:
+          type: string
+          nullable: true
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        externalUser:
+          $ref: '#/components/schemas/CreateExternalUserRequest'
+          nullable: true
+      required:
+        - messages
+      anyOf:
+        - required: [projectId]
+        - required: [projectName]

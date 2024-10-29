@@ -1,0 +1,52 @@
+---
+title: 'Integrating from Slack'
+description: 'How to send Slack conversations and feedbackto Melodi'
+---
+
+Are you using Slack as your channel for customer conversations? You can easily log Slack conversations to Melodi using any of our integration methods and collect in-app feedback from users using our feedback API.
+
+Here's an example of feedback buttons that can be added to any Slack message:
+* [Slack Block Kit Builder with Feedback Example](https://app.slack.com/block-kit-builder/T04RLPH5PNG#%7B%22blocks%22:%5B%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22mrkdwn%22,%22text%22:%22Yes,%20you%20can%20easily%20update%20your%20billing%20information%20by%20going%20to%20your%20settings%20page,%20navigating%20to%20the%20billing%20tab,%20and%20selecting%20a%20different%20plan.%22%7D%7D,%7B%22type%22:%22actions%22,%22elements%22:%5B%7B%22type%22:%22button%22,%22text%22:%7B%22type%22:%22plain_text%22,%22emoji%22:true,%22text%22:%22%E2%9A%A0%EF%B8%8F%20Report%20an%20issue%22%7D,%22style%22:%22danger%22,%22value%22:%22click_me_123%22%7D,%7B%22type%22:%22button%22,%22text%22:%7B%22type%22:%22plain_text%22,%22emoji%22:true,%22text%22:%22%E2%9C%85%20Mark%20as%20good%22%7D,%22style%22:%22primary%22,%22value%22:%22click_me_123%22%7D%5D%7D%5D%7D) (preview below)
+
+*  We recommend adding language that is more like bug reporting e.g. report an issue vs. only a thumbs up / down.
+
+
+![Slack Feedback Example](../images/slack-app-feedback.png)
+
+```json
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Yes, you can easily update your billing information by going to your settings page, navigating to the billing tab, and selecting a different plan."
+			}
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": true,
+						"text": "⚠️ Report an issue"
+					},
+					"style": "danger",
+					"value": "click_me_123"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": true,
+						"text": "✅ Mark as good"
+					},
+					"style": "primary",
+					"value": "click_me_123"
+				}
+			]
+		}
+	]
+}
