@@ -1,0 +1,120 @@
+---
+title: 'React Component'
+description: 'Add feedback buttons to your React application'
+---
+
+The React feedback component adds thumbs up/thumbs down buttons and a feedback popover to collect user feedback about your AI-generated responses. View feedback in your [Melodi dashboard](https://app.melodi.fyi).
+
+<Note>
+  For optimal analytics, we recommend first creating threads using the SDKs, then referencing them 
+  in the feedback widget. This ensures all conversations are tracked, even those without feedback.
+</Note>
+
+## Installation Options
+
+<Tabs>
+  <Tab title="Widget Only">
+    ```bash
+    npm install @melodi/melodi-sdk-react
+    ```
+  </Tab>
+  <Tab title="Widget + SDK (Recommended)">
+    ```bash
+    npm install @melodi/melodi-sdk-react @melodi/melodi-sdk
+    ```
+  </Tab>
+</Tabs>
+
+## Basic Setup
+
+1. Get a publishable API key from your [Melodi settings](https://app.melodi.fyi/admin/settings) (see [API Access](/pages/api-access)).
+
+2. Add the MelodiAuthProvider with your API key:
+```jsx
+<MelodiAuthProvider apiKey="YOUR_API_KEY_HERE">
+  {children}
+</MelodiAuthProvider>
+```
+
+## Usage
+
+<Tabs>
+  <Tab title="Widget Only">
+    ```jsx
+    <MelodiFeedbackWidget
+      thread={{
+        messages: [
+          {
+            role: 'user',
+            content: 'Hello!',
+          },
+          {
+            role: 'assistant',
+            content: 'Hi! How can I help you today?',
+          }
+        ],
+        projectName: 'My Project',
+        metadata: {
+          environment: 'production',
+          feature: 'chat'
+        }
+      }}
+      userInfo={{
+        id: 'user-123',
+        email: 'user@example.com'
+      }}
+      companyName="My Company"
+    />
+    ```
+    <Warning>Only threads that contain feedback will be displayed in the Melodi dashboard. To unlock analytics for all sessions, we recommend creating threads via the SDK then referencing them in the widget.</Warning>
+  </Tab>
+  <Tab title="Widget + SDK (Recommended)">
+    ```jsx
+    import { MelodiClient } from '@melodi/melodi-sdk';
+
+    // First, create/update thread via SDK
+    const thread = await melodi.threads.create({
+      projectName: 'My Project',
+      externalId: 'chat-session-123', // Your custom ID
+      messages: [/* your messages */],
+      metadata: { environment: 'production' }
+    });
+
+    // Then reference either the Melodi threadId or your externalId
+    <MelodiFeedbackWidget
+      // Option 1: Use Melodi's threadId
+      threadId={thread.id}
+      // Option 2: Use your externalId
+      // externalThreadId="chat-session-123"
+      userInfo={{
+        id: 'user-123',
+        email: 'user@example.com'
+      }}
+      companyName="My Company"
+    />
+    ```
+    <Check>
+      Now all threads can be tracked in the Melodi dashboard, even those without feedback. See the [SDK documentation](/integrating-melodi-analytics/sdks) for detailed thread creation examples.
+    </Check>
+  </Tab>
+</Tabs>
+
+
+
+## Component Props
+
+<ResponseField name="threadId" type="string">
+  ID of an existing thread created via the SDK (recommended)
+</ResponseField>
+
+<ResponseField name="thread" type="ThreadProps">
+  Alternative: Direct thread configuration object. See [Thread format](/integrating-melodi-analytics/overview#threads-and-messages) for details.
+</ResponseField>
+
+<ResponseField name="userInfo" type="UserInfo" required>
+  Information about the current user
+</ResponseField>
+
+<ResponseField name="companyName" type="string" required>
+  Your company name to display in the feedback popover
+</ResponseField>

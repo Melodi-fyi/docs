@@ -12,12 +12,16 @@ import ExampleMessages from '/snippets/example-messages.mdx'
 </Warning>
 
 <ParamField body="messages" type="array" required>
-  Array of message objects. Each message must have a role (string) and can optionally include:
-  - externalId (string)
-  - content (string)
-  - type ('markdown' or 'json', defaults to 'markdown')
-  - jsonContent (object, required if type is 'json')
-  - metadata (object with string values)
+  Array of message objects. Each message must include:
+  
+  Required fields:
+  - role (string): The role of the message sender
+
+  Optional fields:
+  - externalId (string): External identifier for the message
+  - type (string): Either 'markdown' or 'json' (defaults to 'markdown')
+  - content (string): The message content when type is 'markdown'
+  - jsonContent (object): Required when type is 'json', must not be present when type is 'markdown'
 </ParamField>
 
 <ExampleMessages />
@@ -55,16 +59,19 @@ curl --request POST \
       {
         "externalId": "1",
         "role": "user",
+        "type": "markdown",
         "content": "Hello!"
       },
       {
         "externalId": "2",
         "role": "AI assistant",
+        "type": "markdown",
         "content": "Hi! How can I help you today?"
       },
       {
         "externalId": "3",
         "role": "user",
+        "type": "markdown",
         "content": "What is your favorite color?"
       },
       {
@@ -81,6 +88,7 @@ curl --request POST \
       {
         "externalId": "5",
         "role": "AI assistant",
+        "type": "markdown",
         "content": "My favorite color is blue. Thanks so much for asking!"
       }
     ],

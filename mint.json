@@ -7,13 +7,18 @@
     "light": "/images/melodi logo.png"
   },
   "favicon": "/melodi-favicon.png",
+  "theme": "venus",
+  "codeBlock": {
+  "mode": "auto"
+  },
+  "rounded": "default",
   "colors": {
-    "primary": "#00A884",
-    "light": "#80E0C1",
-    "dark": "#007359",
+    "primary": "#444CE7",
+    "light": "#C7D7FE",
+    "dark": "#3538CD",
     "anchors": {
-      "from": "#80E0C1",
-      "to": "#007359"
+      "from": "#C7D7FE",
+      "to": "#3538CD"
     }
   },
   "api": {
@@ -47,15 +52,15 @@
       "pages": [
         "integrating-melodi-analytics/overview",
         "integrating-melodi-analytics/api-access",
-        "integrating-melodi-analytics/react-component-new",
-        "integrating-melodi-analytics/python-sdk",
-        "integrating-melodi-analytics/typescript-sdk",
+        "integrating-melodi-analytics/react-component",
+        "integrating-melodi-analytics/sdks",
         "integrating-melodi-analytics/integrating-from-slack"
       ]
     },
     {
       "group": "Specific API Endpoints",
       "pages": [
+        "api-reference/auto-create-thread",
         "api-reference/create-thread",
         "api-reference/get-threads"
       ]
