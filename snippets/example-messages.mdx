@@ -1,0 +1,38 @@
+### Example Messages
+
+```json
+[
+  {
+    "externalId": "1",
+    "role": "user",
+    "content": "Hello!"
+  },
+  {
+    "externalId": "2",
+    "role": "assistant",
+    "content": "Hi! How can I help you today?"
+  },
+  {
+    "externalId": "3",
+    "role": "user",
+    "content": "What's the company's primary brand color?"
+  },
+  {
+    "externalId": "4",
+    "role": "RAG lookup",
+    "type": "json",
+    "jsonContent": {
+      "BrandColorInfo": {
+        "type": "primary",
+        "color": "blue",
+        "hexCode": "#1570EF"
+      }
+    }
+  },
+  {
+    "externalId": "5",
+    "role": "assistant",
+    "content": "The company's primary brand color is blue #1570EF."
+  }
+]
+```

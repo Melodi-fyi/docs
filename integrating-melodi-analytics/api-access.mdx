@@ -1,0 +1,22 @@
+---
+title: 'API Access'
+description: 'How to access Melodi APIs'
+---
+
+To access our external APIs you'll need an API key. Melodi provides two types of API keys:
+
+1. **Private API Key**: Used for most API operations including creating threads and managing projects. You'll need to use your private API key for these operations. You can find or generate a private API key under settings in the Melodi App. "This key should not be used in frontend contexts. For anything that will be used in the browser, use your Publishable API Key.
+
+2. **Publishable API Key**: Used specifically for creating feedback from client-side applications. This key can safely be used in frontend contexts since its permissions are limited.
+
+You can find or generate both types of API keys under settings in the Melodi App:
+
+![Melodi API Key Settings](/images/Melodi-API-key-settings.png)
+
+https://app.melodi.fyi/admin/settings
+
+The API key can be passed either as a header or as a query parameter when making calls to the API. For example:
+- Using private key: `https://app.melodi.fyi/api/external/experiments/1/feedback?apiKey=abc-123`
+- Using publishable key: `https://app.melodi.fyi/api/external/feedback?apiKey=pub-xyz-789`
+
+You can integrate with Melodi using the SDKs or with the API directly. For more information, see the [Create Thread API documentation](/api-reference/create-thread) or [Create Feedback API documentation](/api-reference/create-feedback).

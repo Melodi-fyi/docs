@@ -7,19 +7,25 @@
     "light": "/images/melodi logo.png"
   },
   "favicon": "/melodi-favicon.png",
+  "theme": "venus",
+  "codeBlock": {
+  "mode": "auto"
+  },
+  "rounded": "default",
   "colors": {
-    "primary": "#00A884",
-    "light": "#80E0C1",
-    "dark": "#007359",
+    "primary": "#444CE7",
+    "light": "#C7D7FE",
+    "dark": "#3538CD",
     "anchors": {
-      "from": "#80E0C1",
-      "to": "#007359"
+      "from": "#C7D7FE",
+      "to": "#3538CD"
     }
   },
   "api": {
     "baseUrl": "https://app.melodi.fyi/api",
     "auth": {
-      "method": "key"
+      "method": "key",
+      "name": "API-key"
     }
   },
   "topbarLinks": [
@@ -36,19 +42,25 @@
     {
       "group": "Getting Started",
       "pages": [
-        "pages/what-is-melodi",
-        "pages/quickstart",
-        "pages/data-privacy"
+        "getting-started/what-is-melodi",
+        "getting-started/quickstart",
+        "getting-started/data-privacy"
       ]
     },
         {
-      "group": "Logging Data to Melodi",
+      "group": "Integrating Melodi Analytics",
       "pages": [
-        "pages/getting-started",
-        "pages/api-access",
-        "api-reference/python-sdk",
-        "api-reference/typescript-sdk",
-        "api-reference/create-thread"
+        "integrating-melodi-analytics/overview",
+        "integrating-melodi-analytics/api-access",
+        "integrating-melodi-analytics/react-component",
+        "integrating-melodi-analytics/sdks"
+      ]
+    },
+    {
+      "group": "Specific API Endpoints",
+      "pages": [
+        "api-reference/create-thread",
+        "api-reference/get-threads"
       ]
     }
   ],

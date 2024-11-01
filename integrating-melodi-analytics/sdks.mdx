@@ -1,0 +1,268 @@
+---
+title: 'Melodi SDKs'
+description: 'Melodi offers SDKs for Python and Typescript.'
+---
+
+## Initial set up
+Import required modules for Threads, Messages, Feedback, and Users. More details about these concepts and data types can be found on the [overview page](/integrating-melodi-analytics/overview).
+
+<CodeGroup>
+```python setup_client.py
+from melodi.melodi_client import MelodiClient
+from melodi.feedback.data_models import Feedback
+from melodi.threads.data_models import Message, Thread
+from melodi.users.data_models import User
+```
+
+```typescript setup-client.ts
+import {
+  CreateExternalUserRequest,
+  createFeedback,
+  CreateFeedbackRequest,
+  createOrUpdateThread,
+  CreateThreadRequest,
+} from "@melodi/melodi-sdk-typescript";
+import "dotenv/config";
+```
+</CodeGroup>
+
+## Set up the Melodi client
+Your API key can be found in Settings. For more information, see [API Access](/pages/api-access).
+
+<CodeGroup>
+```python setup_api_key.py
+import os
+
+os.environ["MELODI_API_KEY"] = "<YOUR_KEY>"
+
+client = MelodiClient(verbose=True)
+```
+
+```typescript setup-api-key.ts
+process.env.MELODI_API_KEY = "<YOUR_KEY>";
+```
+</CodeGroup>
+
+## Create a project
+Projects can also be created via the UI.
+
+<CodeGroup>
+```python create_project.py
+new_project = client.projects.create("Melodi SDK Test")
+
+print(new_project.id)
+```
+
+```typescript create-project.ts
+// Project creation is not currently supported in the TypeScript SDK
+```
+</CodeGroup>
+
+## Create a thread in Melodi
+Threads are a flexible data format that support customizable message types, including user, AI response, RAG lookup, and other.
+
+<CodeGroup>
+```python create_thread.py
+melodiClient = MelodiClient(verbose=True)
+
+threadExternalId = "external-thread-id-1"
+
+externalUser = User(
+    externalId="test-user-id-1",
+    name="Test User",
+    email="test-user@example.com",
+    segments={
+      "team": "engineering",
+    }
+)
+
+message1 = Message(
+    externalId="1",
+    role='user',
+    content='Hello!',
+)
+
+message2 = Message(
+    externalId="2",
+    role='assistant',
+    content='Hi! How can I help you today?',
+)
+
+message3 = Message(
+    externalId="3",
+    role='user',
+    content="What's the company's primary brand color?",
+)
+
+message4 = Message(
+    externalId="4",
+    role='RAG lookup',
+    type='json',
+    jsonContent={
+        "BrandColorInfo": {
+            "type": "primary",
+            "color": "blue",
+            "hexCode": "#1570EF"
+        }
+    }
+)
+
+message5 = Message(
+    externalId="5",
+    role='assistant',
+    content="The company's primary brand color is blue #1570EF.",
+)
+
+thread = Thread(
+    projectName="Melodi SDK Test",
+    externalId=threadExternalId,
+    messages=[message1, message2, message3, message4, message5],
+    externalUser=externalUser
+)
+melodi_thread = melodiClient.threads.create_or_update(thread)
+
+print(melodi_thread)
+```
+
+```typescript create-thread.ts
+async function createExampleThread() {
+  const externalThreadId = "typescript-sdk-example-11";
+  const externalUser: CreateExternalUserRequest = {
+    externalId: "testuserid1",
+    name: "Greg Brown",
+    email: "greg+test@melodi.fyi",
+    segments: { team: "engineering" },
+  };
+
+  const createThreadRequest: CreateThreadRequest = {
+    projectId: 64,
+    externalId: externalThreadId,
+    messages: [
+      {
+        externalId: "1",
+        role: "user",
+        content: "Hello!",
+      },
+      {
+        externalId: "2",
+        role: "assistant",
+        content: "Hi! How can I help you today?",
+      },
+      {
+        externalId: "3",
+        role: "user",
+        content: "What's the company's primary brand color?",
+      },
+      {
+        externalId: "4",
+        role: "RAG lookup",
+        type: "json",
+        jsonContent: {
+          BrandColorInfo: {
+            type: "primary",
+            color: "blue",
+            hexCode: "#1570EF"
+          }
+        }
+      },
+      {
+        externalId: "5",
+        role: "assistant",
+        content: "The company's primary brand color is blue #1570EF.",
+      }
+    ],
+    externalUser,
+  };
+
+  const response1 = await createOrUpdateThread(createThreadRequest);
+  console.log(response1);
+}
+```
+</CodeGroup>
+
+## Add feedback to the thread
+
+### Add basic positive/negative feedback
+Feedback can be added to a thread to provide additional context about the conversation.
+<CodeGroup>
+```python create_feedback.py
+feedback = Feedback(
+    externalThreadId=threadExternalId,
+    feedbackText="I don't understand",
+    feedbackType="NEGATIVE"
+)
+
+melodi_feedback = melodiClient.feedback.create(feedback)
+print(melodi_feedback)
+```
+
+```typescript create-feedback.ts
+async function addFeedback() {
+  const feedbackRequest: CreateFeedbackRequest = {
+    externalThreadId: "typescript-sdk-example-11",
+    externalMessageId: "5",
+    attributes: {
+      Quality: "Wonderful",
+    },
+    externalUser: {
+      externalId: "testuserid1",
+      name: "Greg Brown",
+      email: "greg+test@melodi.fyi",
+      segments: { team: "engineering" },
+    },
+  };
+
+  const response3 = await createFeedback(feedbackRequest);
+  console.log(response3);
+}
+```
+</CodeGroup>
+
+### Add feedback with attributes
+Attributes are additional metadata that can be added to feedback that becomes filterable in the UI. Feedback attributes can be created from the Settings page.
+<Warning>
+These attributes and options need to already exist in your organization or this call will fail
+</Warning>
+<CodeGroup>
+```python feedback_attributes.py
+feedback_with_attributes = Feedback(
+    externalThreadId=threadExternalId,
+    feedbackText="This is so funny",
+
+    # These attributes and options need to already exist in your organization
+    # Or this call will fail
+    attributes={
+      "Humor Level": "High",
+    }
+)
+
+melodi_feedback_with_attributes = melodiClient.feedback.create(feedback_with_attributes)
+print(melodi_feedback_with_attributes)
+```
+
+```typescript feedback-attributes.ts
+// Feedback with attributes is shown in the previous TypeScript example
+```
+</CodeGroup>
+
+## Create or update a user
+You can create or update users in Melodi to associate with threads.
+<CodeGroup>
+```python create_user.py
+user = User(
+    externalId="test-user-id-2",
+    name="Different User",
+    email="differentuser@example.com",
+    segments={
+      "team": "sales",
+    }
+)
+
+melodi_user = client.users.create_or_update(user)
+print(melodi_user)
+```
+
+```typescript create-user.ts
+// User creation or update is not currently supported in the TypeScript SDK
+```
+</CodeGroup>
