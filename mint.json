@@ -53,14 +53,12 @@
         "integrating-melodi-analytics/overview",
         "integrating-melodi-analytics/api-access",
         "integrating-melodi-analytics/react-component",
-        "integrating-melodi-analytics/sdks",
-        "integrating-melodi-analytics/integrating-from-slack"
+        "integrating-melodi-analytics/sdks"
       ]
     },
     {
       "group": "Specific API Endpoints",
       "pages": [
-        "api-reference/auto-create-thread",
         "api-reference/create-thread",
         "api-reference/get-threads"
       ]

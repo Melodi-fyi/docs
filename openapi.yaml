@@ -16,17 +16,21 @@ paths:
         - in: query
           name: ids
           schema:
-            type: array
-            items:
-              type: integer
-          description: List of thread IDs to filter by
+            oneOf:
+              - type: integer
+              - type: array
+                items:
+                  type: integer
+          description: Single thread ID or list of thread IDs to filter by
         - in: query
           name: externalUserIds
           schema:
-            type: array
-            items:
-              type: integer
-          description: List of external user IDs to filter by
+            oneOf:
+              - type: integer
+              - type: array
+                items:
+                  type: integer
+          description: Single external user ID or list of external user IDs to filter by
         - in: query
           name: search
           schema:
@@ -45,29 +49,33 @@ paths:
         - in: query
           name: intentIds
           schema:
-            type: array
-            items:
-              type: integer
-          description: List of intent IDs to filter by
+            oneOf:
+              - type: integer
+              - type: array
+                items:
+                  type: integer
+          description: Single intent ID or list of intent IDs to filter by
         - in: query
           name: userSegmentIds
           schema:
-            type: array
-            items:
-              type: integer
-          description: List of user segment IDs to filter by
+            oneOf:
+              - type: integer
+              - type: array
+                items:
+                  type: integer
+          description: Single user segment ID or list of user segment IDs to filter by
         - in: query
           name: before
           schema:
             type: string
             format: date-time
-          description: Filter threads created before this date
+          description: Filter threads created before this date (ISO 8601 format, e.g. 2024-03-21T00:00:00Z)
         - in: query
           name: after
           schema:
             type: string
             format: date-time
-          description: Filter threads created after this date
+          description: Filter threads created after this date (ISO 8601 format, e.g. 2024-03-21T00:00:00Z) 
         - in: query
           name: pageSize
           schema:
@@ -272,7 +280,9 @@ components:
         messages:
           type: array
           items:
-            $ref: '#/components/schemas/Message'
+            oneOf:
+              - $ref: '#/components/schemas/MarkdownMessage'
+              - $ref: '#/components/schemas/JsonMessage'
           description: Array of messages associated with the thread
         externalUser:
           $ref: '#/components/schemas/CreateExternalUserRequest'
@@ -293,10 +303,13 @@ components:
       required:
         - messages
       anyOf:
-        - required: [projectId]
-        - required: [projectName]
+        - title: "Thread with Project ID"
+          required: [projectId]
+        - title: "Thread with Project Name"
+          required: [projectName]
 
-    Message:
+    MarkdownMessage:
+      title: "Markdown Message"
       type: object
       properties:
         externalId:
@@ -304,17 +317,35 @@ components:
           nullable: true
         type:
           type: string
-          enum: ['markdown', 'json']
+          enum: ['markdown']
           default: 'markdown'
-          description: "Defaults to 'markdown' if not provided or null"
         role:
           type: string
         content:
           type: string
           nullable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          default: {}
+      required:
+        - role
+
+    JsonMessage:
+      title: "JSON Message"
+      type: object
+      properties:
+        externalId:
+          type: string
+          nullable: true
+        type:
+          type: string
+          enum: ['json']
+        role:
+          type: string
         jsonContent:
           type: object
-          nullable: true
           additionalProperties: true
         metadata:
           type: object
@@ -323,24 +354,16 @@ components:
           default: {}
       required:
         - role
-      # Validation rules matching the TypeScript refinements
-      oneOf:
-        - properties:
-            type:
-              enum: ['markdown']
-            jsonContent:
-              not: {}
-        - properties:
-            type:
-              enum: ['json']
-            jsonContent:
-              type: object
-          required: ['jsonContent']
+        - jsonContent
+
+    Message:
       description: |
-        Message object with the following validation rules:
-        1. If type is 'json', jsonContent must be provided
-        2. If jsonContent is provided, type must be 'json'
-        3. type defaults to 'markdown' if not provided or null
+        Message object that can be either a Markdown or JSON message.
+        For Markdown messages, use the 'content' field.
+        For JSON messages, use the 'jsonContent' field.
+      oneOf:
+        - $ref: '#/components/schemas/MarkdownMessage'
+        - $ref: '#/components/schemas/JsonMessage'
 
     Error:
       type: object
@@ -459,33 +482,54 @@ components:
         - name
 
     CreateThreadRequest:
-      type: object
-      properties:
-        id:
-          type: number
-          nullable: true
-        externalId:
-          type: string
-          nullable: true
-        projectId:
-          type: number
-          nullable: true
-        projectName:
-          type: string
-          nullable: true
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-        metadata:
+      oneOf:
+        - title: "Create Thread with Project ID"
           type: object
-          additionalProperties:
-            type: string
-        externalUser:
-          $ref: '#/components/schemas/CreateExternalUserRequest'
-          nullable: true
-      required:
-        - messages
-      anyOf:
-        - required: [projectId]
-        - required: [projectName]
+          required: [messages, projectId]
+          properties:
+            externalId:
+              type: string
+              nullable: true
+            projectId:
+              type: number
+            projectName:
+              type: string
+              nullable: true
+            messages:
+              type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/MarkdownMessage'
+                  - $ref: '#/components/schemas/JsonMessage'
+            metadata:
+              type: object
+              additionalProperties:
+                type: string
+            externalUser:
+              $ref: '#/components/schemas/CreateExternalUserRequest'
+              nullable: true
+        - title: "Create Thread with Project Name"
+          type: object
+          required: [messages, projectName]
+          properties:
+            externalId:
+              type: string
+              nullable: true
+            projectId:
+              type: number
+              nullable: true
+            projectName:
+              type: string
+            messages:
+              type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/MarkdownMessage'
+                  - $ref: '#/components/schemas/JsonMessage'
+            metadata:
+              type: object
+              additionalProperties:
+                type: string
+            externalUser:
+              $ref: '#/components/schemas/CreateExternalUserRequest'
+              nullable: true
