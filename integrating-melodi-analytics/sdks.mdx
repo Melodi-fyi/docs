@@ -6,6 +6,8 @@ description: 'Melodi offers SDKs for Python and Typescript.'
 ## Initial set up
 Import required modules for Threads, Messages, Feedback, and Users. More details about these concepts and data types can be found on the [overview page](/integrating-melodi-analytics/overview).
 
+Find our SDKs on GitHub: [Python](https://github.com/Melodi-fyi/melodi-sdk-python/) | [TypeScript](https://github.com/Melodi-fyi/melodi-sdk-typescript/)
+
 <CodeGroup>
 ```python setup_client.py
 from melodi.melodi_client import MelodiClient
@@ -187,6 +189,7 @@ Feedback can be added to a thread to provide additional context about the conver
 <CodeGroup>
 ```python create_feedback.py
 feedback = Feedback(
+    # externalThreadId is required if providing an externalMessageId
     externalThreadId=threadExternalId,
     feedbackText="I don't understand",
     feedbackType="NEGATIVE"
@@ -199,8 +202,11 @@ print(melodi_feedback)
 ```typescript create-feedback.ts
 async function addFeedback() {
   const feedbackRequest: CreateFeedbackRequest = {
+    # Note: When providing externalMessageId, externalThreadId is required
     externalThreadId: "typescript-sdk-example-11",
-    externalMessageId: "5",
+    externalMessageId: "5",  # References the last message in the thread
+    feedbackType: "NEGATIVE",
+    feedbackText: "I don't understand",
     attributes: {
       Quality: "Wonderful",
     },
