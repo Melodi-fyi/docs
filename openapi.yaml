@@ -76,7 +76,7 @@ paths:
           schema:
             type: string
             format: date-time
-          description: Filter threads created after this date (ISO 8601 format, e.g. 2024-03-21T00:00:00Z) 
+          description: Filter threads created after this date (ISO 8601 format, e.g. 2024-03-21T00:00:00Z)
         - in: query
           name: pageSize
           schema:
@@ -103,6 +103,9 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Thread'
+                required:
+                  - count
+                  - rows
         '401':
           description: Unauthorized
         '500':
@@ -362,11 +365,11 @@ components:
           description: ID of the organization to which the thread belongs
         projectId:
           type: number
-          description: ID of the project to which the thread belongs
+          description: ID of the project to which the thread belongs, specify either projectId or projectName
           nullable: true
         projectName:
           type: string
-          description: Name of the project to which the thread belongs
+          description: Name of the project to which the thread belongs, specify either projectId or projectName
           nullable: true
         messages:
           type: array
@@ -376,8 +379,9 @@ components:
               - $ref: '#/components/schemas/JsonMessage'
           description: Array of messages associated with the thread
         externalUser:
-          $ref: '#/components/schemas/CreateExternalUserRequest'
           nullable: true
+          allOf:
+            - $ref: '#/components/schemas/CreateExternalUserRequest'
         metadata:
           type: object
           description: Metadata associated with the thread
@@ -393,11 +397,6 @@ components:
           description: Date when the thread was last updated
       required:
         - messages
-      anyOf:
-        - title: "Thread with Project ID"
-          required: [projectId]
-        - title: "Thread with Project Name"
-          required: [projectName]
 
     MarkdownMessage:
       title: "Markdown Message"
@@ -473,7 +472,7 @@ components:
         feedbackType:
           type: string
           enum: ['POSITIVE', 'NEGATIVE']
-          description: Type of feedback 
+          description: Type of feedback
         feedbackText:
           type: string
           description: Text content of the feedback
@@ -490,9 +489,10 @@ components:
           description: Recommended - ID of the project this thread belongs to. Helps ensure correct thread identification
           nullable: true
         externalUser:
-          $ref: '#/components/schemas/CreateExternalUserRequest'
           nullable: true
           description: External user information for associating feedback with a user
+          allOf:
+            - $ref: '#/components/schemas/CreateExternalUserRequest'
         attributes:
           type: object
           description: |
@@ -551,9 +551,10 @@ components:
           nullable: true
           description: Text content of the feedback
         externalUser:
-          $ref: '#/components/schemas/ExternalUser'
           nullable: true
           description: Information about the external user who provided the feedback
+          allOf:
+            - $ref: '#/components/schemas/CreateExternalUserRequest'
         attributeOptions:
           type: array
           items:
@@ -574,6 +575,7 @@ components:
           format: date-time
       required:
         - id
+        - attributeOptions
         - createdAt
         - updatedAt
 
@@ -655,8 +657,9 @@ components:
               additionalProperties:
                 type: string
             externalUser:
-              $ref: '#/components/schemas/CreateExternalUserRequest'
               nullable: true
+              allOf:
+                - $ref: '#/components/schemas/CreateExternalUserRequest'
         - title: "Create Thread with Project Name"
           type: object
           required: [messages, projectName]
@@ -680,10 +683,10 @@ components:
               additionalProperties:
                 type: string
             externalUser:
-              $ref: '#/components/schemas/CreateExternalUserRequest'
               nullable: true
+              allOf:
+                - $ref: '#/components/schemas/CreateExternalUserRequest'
 
-    # New schemas for attributes
     Attribute:
       type: object
       description: |
@@ -721,6 +724,9 @@ components:
         - organizationId
         - projectId
         - name
+        - options
+        - createdAt
+        - updatedAt
 
     AttributeOption:
       type: object
@@ -753,7 +759,7 @@ components:
     ExternalUser:
       type: object
       description: |
-        Represents an external user. Note: The combination of organizationId and externalId must be 
+        Represents an external user. Note: The combination of organizationId and externalId must be
         unique.
       properties:
         id:
@@ -864,7 +870,7 @@ components:
             type: string
           nullable: true
           description: |
-            Key-value pairs of segment information. 
+            Key-value pairs of segment information.
             Will be transformed to empty object if null or undefined.
           default: {}
           example: { "team": "engineering", "role": "developer" }
