@@ -11,7 +11,8 @@ paths:
     get:
       summary: Retrieve all threads
       security:
-         - ApiKeyAuth: []
+        - ApiKeyHeader: []
+        - ApiKeyQueryParam: []
       parameters:
         - in: query
           name: ids
@@ -26,10 +27,10 @@ paths:
           name: externalUserIds
           schema:
             oneOf:
-              - type: integer
+              - type: string
               - type: array
                 items:
-                  type: integer
+                  type: string
           description: Single external user ID or list of external user IDs to filter by
         - in: query
           name: search
@@ -108,6 +109,9 @@ paths:
           description: Internal Server Error
     post:
       summary: Create a new thread
+      security:
+        - ApiKeyHeader: []
+        - ApiKeyQueryParam: []
       requestBody:
         description: A thread object that needs to be created
         required: true
@@ -150,9 +154,11 @@ paths:
   /feedback:
     post:
       summary: Create user feedback
-      description: This API can be used instead of our Feedback UI component (thumbs up/down) to create feedbacks that will be visible in the Feedback Inbox.
+      description: |
+        This API can be used instead of our Feedback UI component (thumbs up/down) to create feedbacks that will be visible in the Feedback Inbox.
+        Note: This endpoint requires a publishable API key as a query parameter only.
       security:
-        - ApiKeyAuth: []
+        - ApiKeyQueryParam: []
       requestBody:
         required: true
         content:
@@ -173,7 +179,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: Unauthorized
+          description: Unauthorized - Missing or invalid publishable API key
           content:
             application/json:
               schema:
@@ -189,7 +195,8 @@ paths:
     get:
       summary: Retrieve projects for an organization
       security:
-        - ApiKeyAuth: []
+        - ApiKeyHeader: []
+        - ApiKeyQueryParam: []
       parameters:
         - in: query
           name: organizationId
@@ -214,7 +221,8 @@ paths:
     post:
       summary: Create a new project
       security:
-        - ApiKeyAuth: []
+        - ApiKeyHeader: []
+        - ApiKeyQueryParam: []
       requestBody:
         required: true
         content:
@@ -247,12 +255,95 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /users:
+    put:
+      summary: Create or update an external user
+      description: |
+        Creates a new external user or updates an existing one if the externalId already exists.
+        When creating a new user, segments will be automatically created if they don't exist.
+      security:
+        - ApiKeyHeader: []
+        - ApiKeyQueryParam: []
+      requestBody:
+        description: External user object for creation or update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - externalId
+              properties:
+                externalId:
+                  type: string
+                  description: External identifier for the user
+                email:
+                  type: string
+                  nullable: true
+                  description: User's email address
+                name:
+                  type: string
+                  nullable: true
+                  description: User's name
+                username:
+                  type: string
+                  nullable: true
+                  description: User's username
+                segments:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  description: Key-value pairs where the key is the segment type name and the value is the segment value
+                  default: {}
+      responses:
+        '200':
+          description: External user successfully created or updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalUser'
+              example:
+                id: 123
+                organizationId: 456
+                externalId: "user123"
+                name: "John Doe"
+                email: "user@example.com"
+                username: "johndoe"
+                segments: [
+                  {
+                    id: 789,
+                    name: "developer",
+                    type: {
+                      id: 101,
+                      name: "role"
+                    }
+                  }
+                ]
+                createdAt: "2024-03-21T00:00:00Z"
+                updatedAt: "2024-03-21T00:00:00Z"
+        '400':
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized - Invalid or missing API key
+        '500':
+          description: Internal Server Error
+
 components:
   securitySchemes:
-    ApiKeyAuth:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: API-Key
+      description: Your Melodi API key
+    ApiKeyQueryParam:
       type: apiKey
       in: query
       name: apiKey
+      description: Your Melodi API key. Note that for the feedback endpoint, this is a publishable API key.
 
   schemas:
     Thread:
@@ -373,62 +464,118 @@ components:
 
     FeedbackCreateRequest:
       type: object
+      description: |
+        Create feedback request object. Feedback is always associated with a message:
+        - If only externalThreadId is provided, feedback will be attached to the last message in the thread
+        - If both externalThreadId and externalMessageId are provided, feedback will be attached to the specified message
+        Note: externalThreadId is only unique per project, so including projectId is recommended to ensure correct thread identification.
       properties:
-        threadId:
+        feedbackType:
           type: string
-          description: ID of the thread containing the message being rated
-        messageId:
+          enum: ['POSITIVE', 'NEGATIVE']
+          description: Type of feedback 
+        feedbackText:
           type: string
-          description: ID of the specific message being rated
-        feedback:
-          $ref: '#/components/schemas/Feedback'
-        suggestedChanges:
-          type: string
-          description: Optional proposed changes to the message content
+          description: Text content of the feedback
           nullable: true
-        user:
-          $ref: '#/components/schemas/UserInfo'
+        externalThreadId:
+          type: string
+          description: External ID of the thread containing the target message
+        externalMessageId:
+          type: string
+          description: ID of the specific message for feedback. If not provided, feedback will be attached to the thread's last message
+          nullable: true
+        projectId:
+          type: integer
+          description: Recommended - ID of the project this thread belongs to. Helps ensure correct thread identification
+          nullable: true
+        externalUser:
+          $ref: '#/components/schemas/CreateExternalUserRequest'
+          nullable: true
+          description: External user information for associating feedback with a user
+        attributes:
+          type: object
+          description: |
+            Key-value pairs where:
+            - key: attribute name (must match an existing attribute in the project)
+            - value: option name (must match an existing option for that attribute)
+          additionalProperties:
+            type: string
+          example:
+            Quality: "Wonderful"
+            Relevance: "High"
       required:
-        - threadId
+        - feedbackType
+        - externalThreadId
+
+    ExternalFeedbackMessageAssociation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Unique identifier for the message association
+        messageId:
+          type: integer
+          format: int32
+          description: ID of the associated message
+        externalFeedbackId:
+          type: integer
+          format: int32
+          description: ID of the external feedback (unique)
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
         - messageId
-        - feedback
+        - externalFeedbackId
 
     ExternalFeedback:
       type: object
       properties:
         id:
-          type: string
+          type: integer
+          format: int32
+          description: Unique identifier for the feedback
         feedbackType:
           type: string
+          maxLength: 255
+          nullable: true
+          description: Type of the feedback
         feedbackText:
           type: string
-        threadId:
-          type: string
-        messageId:
-          type: string
-        userId:
-          type: string
           nullable: true
-        suggestedChanges:
-          type: string
+          description: Text content of the feedback
+        externalUser:
+          $ref: '#/components/schemas/ExternalUser'
           nullable: true
+          description: Information about the external user who provided the feedback
+        attributeOptions:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/AttributeOption'
+              - type: object
+                properties:
+                  attribute:
+                    $ref: '#/components/schemas/Attribute'
+                required:
+                  - attribute
+          description: List of attribute options with their full attribute details
         createdAt:
           type: string
           format: date-time
-
-    Feedback:
-      type: object
-      properties:
-        feedbackType:
+        updatedAt:
           type: string
-          enum:
-            - POSITIVE
-            - NEGATIVE
-        feedbackText:
-          type: string
-          nullable: true
+          format: date-time
       required:
-        - feedbackType
+        - id
+        - createdAt
+        - updatedAt
 
     UserInfo:
       type: object
@@ -459,13 +606,15 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
+          format: int32
           description: Unique identifier for the project
         name:
           type: string
           description: Name of the project
         organizationId:
-          type: string
+          type: integer
+          format: int32
           description: ID of the organization the project belongs to
       required:
         - id
@@ -533,3 +682,209 @@ components:
             externalUser:
               $ref: '#/components/schemas/CreateExternalUserRequest'
               nullable: true
+
+    # New schemas for attributes
+    Attribute:
+      type: object
+      description: |
+        Represents an attribute. Note: The combination of projectId and name must be unique.
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Unique identifier for the attribute
+        organizationId:
+          type: integer
+          format: int32
+          description: ID of the organization this attribute belongs to
+        projectId:
+          type: integer
+          format: int32
+          description: ID of the project this attribute belongs to
+        name:
+          type: string
+          maxLength: 255
+          description: Name of the attribute
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeOption'
+          description: List of options available for this attribute
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - organizationId
+        - projectId
+        - name
+
+    AttributeOption:
+      type: object
+      description: |
+        Represents an attribute option. Note: The combination of attributeId and name must be unique.
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Unique identifier for the attribute option
+        attributeId:
+          type: integer
+          format: int32
+          description: ID of the parent attribute
+        name:
+          type: string
+          maxLength: 255
+          description: Name of the attribute option
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - attributeId
+        - name
+
+    ExternalUser:
+      type: object
+      description: |
+        Represents an external user. Note: The combination of organizationId and externalId must be 
+        unique.
+      properties:
+        id:
+          type: number
+          description: Unique identifier for the user
+        organizationId:
+          type: number
+          description: ID of the organization this user belongs to
+        externalId:
+          type: string
+          description: External identifier for the user
+        name:
+          type: string
+          nullable: true
+          description: User's name
+        email:
+          type: string
+          nullable: true
+          description: User's email address
+        username:
+          type: string
+          nullable: true
+          description: User's username
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+              organizationId:
+                type: number
+              name:
+                type: string
+              userSegmentTypeId:
+                type: number
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+              type:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  organizationId:
+                    type: number
+                  name:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+                required:
+                  - id
+                  - organizationId
+                  - name
+                  - createdAt
+                  - updatedAt
+            required:
+              - id
+              - organizationId
+              - name
+              - userSegmentTypeId
+              - createdAt
+              - updatedAt
+              - type
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - organizationId
+        - externalId
+        - createdAt
+        - updatedAt
+        - segments
+
+    CreateExternalUserRequest:
+      type: object
+      description: Request object for creating or updating an external user
+      properties:
+        externalId:
+          type: string
+          description: External identifier for the user
+        email:
+          type: string
+          nullable: true
+          description: User's email address. Will be transformed to undefined if null
+        name:
+          type: string
+          nullable: true
+          description: User's name. Will be transformed to undefined if null
+        username:
+          type: string
+          nullable: true
+          description: User's username. Will be transformed to undefined if null
+        segments:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: |
+            Key-value pairs of segment information. 
+            Will be transformed to empty object if null or undefined.
+          default: {}
+          example: { "team": "engineering", "role": "developer" }
+      required:
+        - externalId
+
+    UserSegment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Unique identifier for the user segment
+        name:
+          type: string
+          description: Name of the segment
+        value:
+          type: string
+          description: Value associated with the segment
+      required:
+        - id
+        - name
+        - value

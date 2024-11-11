@@ -21,8 +21,11 @@
       "to": "#3538CD"
     }
   },
+  "feedback": {
+    "thumbsRating": true
+  },
   "api": {
-    "baseUrl": "https://app.melodi.fyi/api",
+    "baseUrl": "https://app.melodi.fyi/api/external",
     "auth": {
       "method": "key",
       "name": "API-key"
@@ -47,7 +50,7 @@
         "getting-started/data-privacy"
       ]
     },
-        {
+    {
       "group": "Integrating Melodi Analytics",
       "pages": [
         "integrating-melodi-analytics/overview",
@@ -60,6 +63,8 @@
       "group": "Specific API Endpoints",
       "pages": [
         "api-reference/create-thread",
+        "api-reference/create-feedback",
+        "api-reference/create-user",
         "api-reference/get-threads"
       ]
     }
