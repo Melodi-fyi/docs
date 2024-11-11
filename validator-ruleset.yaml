@@ -2,3 +2,7 @@ extends: '@ibm-cloud/openapi-ruleset'
 rules:
   ibm-property-casing-convention: off
   ibm-parameter-casing-convention: off
+  ibm-enum-casing-convention: off
+  ibm-no-array-responses: off
+  ibm-required-enum-properties-in-response: off
+
