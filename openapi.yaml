@@ -10,10 +10,9 @@ paths:
   /threads:
     get:
       summary: Retrieve all threads
-      # Remove security array here since it's now global
       security:
         - ApiKeyHeader: []
-        - ApiKeyQuery: []
+        - ApiKeyQueryParam: []
       parameters:
         - in: query
           name: ids
@@ -112,7 +111,7 @@ paths:
       summary: Create a new thread
       security:
         - ApiKeyHeader: []
-        - ApiKeyQuery: []
+        - ApiKeyQueryParam: []
       requestBody:
         description: A thread object that needs to be created
         required: true
@@ -159,7 +158,7 @@ paths:
         This API can be used instead of our Feedback UI component (thumbs up/down) to create feedbacks that will be visible in the Feedback Inbox.
         Note: This endpoint requires a publishable API key as a query parameter only.
       security:
-        - ApiKeyQuery: []
+        - ApiKeyQueryParam: []
       requestBody:
         required: true
         content:
@@ -197,7 +196,7 @@ paths:
       summary: Retrieve projects for an organization
       security:
         - ApiKeyHeader: []
-        - ApiKeyQuery: []
+        - ApiKeyQueryParam: []
       parameters:
         - in: query
           name: organizationId
@@ -223,7 +222,7 @@ paths:
       summary: Create a new project
       security:
         - ApiKeyHeader: []
-        - ApiKeyQuery: []
+        - ApiKeyQueryParam: []
       requestBody:
         required: true
         content:
@@ -264,7 +263,7 @@ paths:
         When creating a new user, segments will be automatically created if they don't exist.
       security:
         - ApiKeyHeader: []
-        - ApiKeyQuery: []
+        - ApiKeyQueryParam: []
       requestBody:
         description: External user object for creation or update
         required: true
@@ -340,7 +339,7 @@ components:
       in: header
       name: API-Key
       description: Your Melodi API key
-    ApiKeyQuery:
+    ApiKeyQueryParam:
       type: apiKey
       in: query
       name: apiKey
@@ -551,27 +550,22 @@ components:
           type: string
           nullable: true
           description: Text content of the feedback
-        userId:
-          type: integer
-          format: int32
+        externalUser:
+          $ref: '#/components/schemas/ExternalUser'
           nullable: true
-          description: ID of the internal user if applicable
-        externalUserId:
-          type: string
-          nullable: true
-          description: External identifier of the user if applicable
-        externalThreadId:
-          type: string
-          description: ID of the thread this feedback is associated with
+          description: Information about the external user who provided the feedback
         attributeOptions:
           type: array
           items:
-            $ref: '#/components/schemas/AttributeOption'
-          description: List of attribute options associated with this feedback
-        messageAssociation:
-          $ref: '#/components/schemas/ExternalFeedbackMessageAssociation'
-          nullable: true
-          description: Associated message information
+            allOf:
+              - $ref: '#/components/schemas/AttributeOption'
+              - type: object
+                properties:
+                  attribute:
+                    $ref: '#/components/schemas/Attribute'
+                required:
+                  - attribute
+          description: List of attribute options with their full attribute details
         createdAt:
           type: string
           format: date-time
@@ -580,7 +574,8 @@ components:
           format: date-time
       required:
         - id
-        - externalThreadId
+        - createdAt
+        - updatedAt
 
     UserInfo:
       type: object
@@ -836,16 +831,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-        ExternalFeedback:
-          type: array
-          items:
-            type: object
-          description: Array of feedback associated with this user
-        Thread:
-          type: array
-          items:
-            type: object
-          description: Array of threads associated with this user
       required:
         - id
         - organizationId
@@ -853,8 +838,6 @@ components:
         - createdAt
         - updatedAt
         - segments
-        - ExternalFeedback
-        - Thread
 
     CreateExternalUserRequest:
       type: object

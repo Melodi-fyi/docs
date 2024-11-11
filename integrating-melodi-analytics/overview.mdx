@@ -23,21 +23,47 @@ Threads are composed of messages, which have an externalID, role (user, assistan
 
 ### Message Types
 
-Messages in a thread can be one of two types:
 
-1. **Markdown Messages** (default)
-   - Used for standard text content
-   - When `type: 'markdown'` (default if not specified)
-   - Content goes in the `content` field
-
-2. **JSON Messages**
-   - Used for structured data or tool outputs
-   - Must set `type: 'json'`
-   - Data goes in the `jsonContent` field
-
-All messages require a `role` field, and can optionally include `metadata` and `externalId`. 
+Messages in a thread can be one of two types: `markdown` or `json`. All messages require a `role` field, and can optionally include `metadata` and `externalId`. 
 
 <Tip>Roles labeled as "user" will be rendered green in the UI, while "assistant" will be rendered blue. All other strings appear gray.</Tip>
+
+<Tabs>
+  <Tab title="Markdown Messages">
+    **Markdown Messages** (default)
+    - Used for standard text content
+    - When `type: 'markdown'` (default if not specified)
+    - Content goes in the `content` field
+
+    ```typescript
+    {
+      type: 'markdown',
+      role: 'user',
+      content: 'Hello world',
+      metadata: {} // optional
+    }
+    ```
+  </Tab>
+  <Tab title="JSON Messages">
+    **JSON Messages**
+    - Used for structured data or tool outputs
+    - Must set `type: 'json'`
+    - Data goes in the `jsonContent` field
+
+    ```typescript
+    {
+      type: 'json',
+      role: 'function',
+      jsonContent: {
+        temperature: 72,
+        humidity: 45
+      },
+      metadata: {} // optional
+    }
+    ```
+  </Tab>
+</Tabs>
+
 
 ### Visual Example
 
@@ -52,6 +78,28 @@ User feedback can be positive or negative or associated with attributes like "in
 
 ![Feedback Attributes](../images/create-attributes.png)
 
+When creating feedback, you need to specify:
+
+- `feedbackType`: Either 'POSITIVE' or 'NEGATIVE'
+- `externalThreadId`: The thread ID to attach feedback to
+- Optional fields:
+  - `feedbackText`: Additional text feedback
+  - `externalMessageId`: Specific message ID (defaults to last message)
+  - `projectId`: Recommended to ensure correct thread identification
+  - `attributes`: Key-value pairs matching your configured attributes
+
+```typescript
+{
+  feedbackType: 'POSITIVE',
+  externalThreadId: 'chat_123',
+  feedbackText: 'Very helpful response!',
+  attributes: {
+    Quality: 'Wonderful',
+    Relevance: 'High'
+  }
+}
+```
+
 User feedback can be collected via the Melodi feedback widget or through your own feedback UI with Melodi's [feedback API](/api-reference/create-feedback).
 
 Feedback will appear on the session page. 
@@ -64,6 +112,26 @@ Feedback will also appear on the Melodi dashboard.
 Tracking user data is not required, but highly recommended in order to calculate metrics like active users, retention, and churn. User segments are useful for tracking categories like "internal" vs "external" users, or "paid" vs "free" users. Users are available on the /users page in the Melodi UI. 
 
 ![Users display](../images/users-display.png)
+
+Users can be created or updated with the following information:
+- Required: `externalId` (unique identifier for the user)
+- Optional:
+  - `email`
+  - `name`
+  - `username`
+  - `segments`: Key-value pairs for user categorization
+
+```typescript
+{
+  externalId: "user_123",
+  email: "user@example.com",
+  name: "John Doe",
+  segments: {
+    "team": "engineering",
+    "role": "developer"
+  }
+}
+```
 
 ## External IDs
 

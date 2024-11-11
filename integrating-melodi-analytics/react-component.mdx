@@ -76,8 +76,18 @@ The React feedback component adds thumbs up/thumbs down buttons and a feedback p
     const thread = await melodi.threads.create({
       projectName: 'My Project',
       externalId: 'chat-session-123', // Your custom ID
-      messages: [/* your messages */],
-      metadata: { environment: 'production' }
+messages: [
+        {
+          "externalId": "1",
+          "role": "user",
+          "content": "Hello!"
+        },
+        {
+          "externalId": "2",
+          "role": "assistant",
+          "content": "Hi! How can I help you today?"
+        }
+      ],      metadata: { environment: 'production' }
     });
 
     // Then reference either the Melodi threadId or your externalId

@@ -202,14 +202,11 @@ print(melodi_feedback)
 ```typescript create-feedback.ts
 async function addFeedback() {
   const feedbackRequest: CreateFeedbackRequest = {
-    # Note: When providing externalMessageId, externalThreadId is required
+    // Note: When providing externalMessageId, externalThreadId is required
     externalThreadId: "typescript-sdk-example-11",
-    externalMessageId: "5",  # References the last message in the thread
+    externalMessageId: "5",  // References the last message in the thread
     feedbackType: "NEGATIVE",
     feedbackText: "I don't understand",
-    attributes: {
-      Quality: "Wonderful",
-    },
     externalUser: {
       externalId: "testuserid1",
       name: "Greg Brown",
@@ -247,7 +244,19 @@ print(melodi_feedback_with_attributes)
 ```
 
 ```typescript feedback-attributes.ts
-// Feedback with attributes is shown in the previous TypeScript example
+async function addFeedbackWithAttributes() {
+  const feedbackRequest: CreateFeedbackRequest = {
+    externalThreadId: "typescript-sdk-example-11",
+    feedbackType: "POSITIVE",
+    feedbackText: "This is so funny",
+    attributes: {
+      "Humor Level": "High"
+    }
+  };
+
+  const response = await createFeedback(feedbackRequest);
+  console.log(response);
+}
 ```
 </CodeGroup>
 
@@ -269,6 +278,28 @@ print(melodi_user)
 ```
 
 ```typescript create-user.ts
-// User creation or update is not currently supported in the TypeScript SDK
+import {
+  createFeedback,
+  CreateFeedbackRequest,
+  createOrUpdateThread,
+  createOrUpdateUser,
+  CreateThreadRequest,
+  UserResponse,
+} from "@melodi/melodi-sdk-typescript";
+import "dotenv/config";
+
+const externalUserId = "user-sdk-example-1";
+
+async function createExampleUser() {
+  const user: UserResponse = await createOrUpdateUser({
+    externalId: externalUserId,
+    name: "Example User",
+    email: "testuser@melodi.fyi",
+    segments: { team: "engineering" },
+  });
+
+  return user;
+}
+
 ```
 </CodeGroup>
