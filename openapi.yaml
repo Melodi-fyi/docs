@@ -539,14 +539,14 @@ components:
               type: array
               items:
                 oneOf:
-                  - $ref: "#/components/schemas/MarkdownMessage"
-                  - $ref: "#/components/schemas/JsonMessage"
+                  - $ref: "./openapi/schemas/messages/MarkdownMessage.yaml"
+                  - $ref: "./openapi/schemas/messages/JsonMessage.yaml"
             metadata:
               type: object
               additionalProperties:
                 type: string
             externalUser:
-              $ref: "#/components/schemas/CreateExternalUserRequest"
+              $ref: "./openapi/schemas/users/CreateExternalUserRequest.yaml"
               nullable: true
         - title: "Create Thread with Project Name"
           type: object
