@@ -1,0 +1,22 @@
+title: "JSON Message"
+type: object
+properties:
+  externalId:
+    type: string
+    nullable: true
+  type:
+    type: string
+    enum: ["json"]
+  role:
+    type: string
+  jsonContent:
+    type: object
+    additionalProperties: true
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+    default: {}
+required:
+  - role
+  - jsonContent

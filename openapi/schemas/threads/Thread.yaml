@@ -1,0 +1,51 @@
+type: object
+properties:
+  id:
+    type: number
+    description: Unique identifier for the thread
+    nullable: true
+  externalId:
+    type: string
+    description: External thread ID
+    nullable: true
+  organizationId:
+    type: number
+    description: ID of the organization to which the thread belongs
+  projectId:
+    type: number
+    description: ID of the project to which the thread belongs
+    nullable: true
+  projectName:
+    type: string
+    description: Name of the project to which the thread belongs
+    nullable: true
+  messages:
+    type: array
+    items:
+      oneOf:
+        - $ref: "../messages/MarkdownMessage.yaml"
+        - $ref: "../messages/JsonMessage.yaml"
+    description: Array of messages associated with the thread
+  externalUser:
+    $ref: "../users/CreateExternalUserRequest.yaml"
+    nullable: true
+  metadata:
+    type: object
+    description: Metadata associated with the thread
+    additionalProperties:
+      type: string
+  createdAt:
+    type: string
+    format: date-time
+    description: Date when the thread was created
+  updatedAt:
+    type: string
+    format: date-time
+    description: Date when the thread was last updated
+required:
+  - messages
+anyOf:
+  - title: "Thread with Project ID"
+    required: [projectId]
+  - title: "Thread with Project Name"
+    required: [projectName]

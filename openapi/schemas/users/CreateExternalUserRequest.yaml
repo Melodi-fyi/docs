@@ -1,0 +1,30 @@
+type: object
+description: Request object for creating or updating an external user
+properties:
+  externalId:
+    type: string
+    description: External identifier for the user
+  email:
+    type: string
+    nullable: true
+    description: User's email address. Will be transformed to undefined if null
+  name:
+    type: string
+    nullable: true
+    description: User's name. Will be transformed to undefined if null
+  username:
+    type: string
+    nullable: true
+    description: User's username. Will be transformed to undefined if null
+  segments:
+    type: object
+    additionalProperties:
+      type: string
+    nullable: true
+    description: |
+      Key-value pairs of segment information.
+      Will be transformed to empty object if null or undefined.
+    default: {}
+    example: { "team": "engineering", "role": "developer" }
+required:
+  - externalId

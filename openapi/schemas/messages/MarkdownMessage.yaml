@@ -1,0 +1,22 @@
+title: "Markdown Message"
+type: object
+properties:
+  externalId:
+    type: string
+    nullable: true
+  type:
+    type: string
+    enum: ["markdown"]
+    default: "markdown"
+  role:
+    type: string
+  content:
+    type: string
+    nullable: true
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+    default: {}
+required:
+  - role

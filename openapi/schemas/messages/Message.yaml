@@ -1,0 +1,7 @@
+description: |
+  Message object that can be either a Markdown or JSON message.
+  For Markdown messages, use the 'content' field.
+  For JSON messages, use the 'jsonContent' field.
+oneOf:
+  - $ref: "#/components/schemas/MarkdownMessage"
+  - $ref: "#/components/schemas/JsonMessage"
