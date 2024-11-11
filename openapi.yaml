@@ -347,6 +347,12 @@ components:
     Thread:
       $ref: "./openapi/schemas/threads/Thread.yaml"
 
+    JsonMessage:
+      $ref: "./openapi/schemas/messages/JsonMessage.yaml"
+
+    MarkdownMessage:
+      $ref: "./openapi/schemas/messages/MarkdownMessage.yaml"
+
     Error:
       type: object
       properties:
@@ -539,14 +545,14 @@ components:
               type: array
               items:
                 oneOf:
-                  - $ref: "./openapi/schemas/messages/MarkdownMessage.yaml"
-                  - $ref: "./openapi/schemas/messages/JsonMessage.yaml"
+                  - $ref: "#/components/schemas/MarkdownMessage"
+                  - $ref: "#/components/schemas/JsonMessage"
             metadata:
               type: object
               additionalProperties:
                 type: string
             externalUser:
-              $ref: "./openapi/schemas/users/CreateExternalUserRequest.yaml"
+              $ref: "#/components/schemas/CreateExternalUserRequest"
               nullable: true
         - title: "Create Thread with Project Name"
           type: object
