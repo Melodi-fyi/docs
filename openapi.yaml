@@ -17,20 +17,16 @@ paths:
         - in: query
           name: ids
           schema:
-            oneOf:
-              - type: integer
-              - type: array
-                items:
-                  type: integer
+            type: array
+            items:
+              type: integer
           description: Single thread ID or list of thread IDs to filter by
         - in: query
           name: externalUserIds
           schema:
-            oneOf:
-              - type: string
-              - type: array
-                items:
-                  type: string
+            type: array
+            items:
+              type: string
           description: Single external user ID or list of external user IDs to filter by
         - in: query
           name: search
@@ -59,11 +55,9 @@ paths:
         - in: query
           name: userSegmentIds
           schema:
-            oneOf:
-              - type: integer
-              - type: array
-                items:
-                  type: integer
+            type: array
+            items:
+              type: integer
           description: Single user segment ID or list of user segment IDs to filter by
         - in: query
           name: before
@@ -876,21 +870,3 @@ components:
           example: { "team": "engineering", "role": "developer" }
       required:
         - externalId
-
-    UserSegment:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-          description: Unique identifier for the user segment
-        name:
-          type: string
-          description: Name of the segment
-        value:
-          type: string
-          description: Value associated with the segment
-      required:
-        - id
-        - name
-        - value
