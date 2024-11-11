@@ -9,7 +9,7 @@
   "favicon": "/melodi-favicon.png",
   "theme": "venus",
   "codeBlock": {
-  "mode": "auto"
+    "mode": "auto"
   },
   "rounded": "default",
   "colors": {
