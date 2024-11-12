@@ -347,7 +347,6 @@ components:
         id:
           type: number
           description: Unique identifier for the thread
-          nullable: true
         externalId:
           type: string
           description: External thread ID
@@ -355,14 +354,16 @@ components:
         organizationId:
           type: number
           description: ID of the organization to which the thread belongs
-        projectId:
-          type: number
-          description: ID of the project to which the thread belongs, specify either projectId or projectName
-          nullable: true
-        projectName:
-          type: string
-          description: Name of the project to which the thread belongs, specify either projectId or projectName
-          nullable: true
+        project:
+          type: object
+          properties:
+            id:
+              type: number
+            name:
+              type: string
+          required:
+            - id
+            - name
         messages:
           type: array
           items:
@@ -388,7 +389,12 @@ components:
           format: date-time
           description: Date when the thread was last updated
       required:
+        - id
+        - organizationId
+        - project
         - messages
+        - createdAt
+        - updatedAt
 
     MarkdownMessage:
       title: "Markdown Message"
