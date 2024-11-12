@@ -413,6 +413,8 @@ components:
           default: {}
       required:
         - role
+        - content
+        - type
 
     JsonMessage:
       title: "JSON Message"
@@ -424,6 +426,7 @@ components:
         type:
           type: string
           enum: ["json"]
+          default: "json"
         role:
           type: string
         jsonContent:
@@ -437,6 +440,7 @@ components:
       required:
         - role
         - jsonContent
+        - type
 
     Message:
       description: |
