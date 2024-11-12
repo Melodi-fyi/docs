@@ -394,57 +394,65 @@ components:
         - createdAt
         - updatedAt
 
-    MarkdownMessage:
-      title: "Markdown Message"
+    BaseMessage:
       type: object
       properties:
         externalId:
           type: string
           nullable: true
-        type:
-          type: string
-          enum: ["markdown"]
-          default: "markdown"
         role:
           type: string
-        content:
-          type: string
-          nullable: true
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          default: {}
       required:
         - role
-        - content
-        - type
+
+    BaseMessageResponse:
+      allOf:
+        - $ref: "#/components/schemas/BaseMessage"
+        - type: object
+          properties:
+            metadata:
+              type: object
+              additionalProperties:
+                type: string
+              default: {}
+          required:
+            - metadata
+
+    MarkdownMessage:
+      title: "Markdown Message"
+      allOf:
+        - $ref: "#/components/schemas/BaseMessageResponse"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: ["markdown"]
+              default: "markdown"
+            content:
+              type: string
+              nullable: true
+          required:
+            - content
+            - type
+            - metadata
 
     JsonMessage:
       title: "JSON Message"
-      type: object
-      properties:
-        externalId:
-          type: string
-          nullable: true
-        type:
-          type: string
-          enum: ["json"]
-          default: "json"
-        role:
-          type: string
-        jsonContent:
-          type: object
-          additionalProperties: true
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          default: {}
-      required:
-        - role
-        - jsonContent
-        - type
+      allOf:
+        - $ref: "#/components/schemas/BaseMessageResponse"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: ["json"]
+              default: "json"
+            jsonContent:
+              type: object
+              additionalProperties: true
+          required:
+            - jsonContent
+            - type
+            - metadata
 
     Message:
       description: |
@@ -455,25 +463,20 @@ components:
         - $ref: "#/components/schemas/MarkdownMessage"
         - $ref: "#/components/schemas/JsonMessage"
 
-    BaseCreateMessageRequest:
-      type: object
-      properties:
-        externalId:
-          type: string
-          nullable: true
-        role:
-          type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-      required:
-        - role
+    BaseMessageCreateRequest:
+      allOf:
+        - $ref: "#/components/schemas/BaseMessage"
+        - type: object
+          properties:
+            metadata:
+              type: object
+              additionalProperties:
+                type: string
+              nullable: true
 
     CreateMarkdownMessageRequest:
       allOf:
-        - $ref: "#/components/schemas/BaseCreateMessageRequest"
+        - $ref: "#/components/schemas/BaseMessageCreateRequest"
         - type: object
           properties:
             type:
@@ -488,7 +491,7 @@ components:
 
     CreateJsonMessageRequest:
       allOf:
-        - $ref: "#/components/schemas/BaseCreateMessageRequest"
+        - $ref: "#/components/schemas/BaseMessageCreateRequest"
         - type: object
           properties:
             type:
