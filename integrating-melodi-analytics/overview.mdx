@@ -1,12 +1,13 @@
 ---
-title: 'Overview: Data Types'
-description: 'An overview of Melodi concepts and data types'
+title: "Overview: Data Types"
+description: "An overview of Melodi concepts and data types"
 ---
 
 There are a few types of data to send to Melodi: projects, threads (which contains messages), user feedback, users, and external IDs.
 
 ## Projects
-Melodi provides a number of ways to integrate with your application. To get started, create a project via the [Python](/integrating-melodi-analytics/python-sdk) or [Typescript](/integrating-melodi-analytics/typescript-sdk) SDKs, the [Create Project API](/api-reference/create-project), the [React component](/integrating-melodi-analytics/react-component), or directly in the Melodi UI. Then you can create threads, messages, user feedback, and users.
+
+Melodi provides a number of ways to integrate with your application. To get started, create a project via the [Python](/integrating-melodi-analytics/python-sdk) or [Typescript](/integrating-melodi-analytics/typescript-sdk) SDKs, the [React component](/integrating-melodi-analytics/react-component), or directly in the Melodi UI. Then you can create threads, messages, user feedback, and users.
 
 Projects are the top level container in Melodi. You can have multiple projects, each with their own threads, users, and feedback. In general, a project is a single product or feature. For example, you might have a project for a customer support chatbot and a separate project for a financial assistant.
 
@@ -16,17 +17,19 @@ Projects are the top level container in Melodi. You can have multiple projects, 
 
 Threads are the main way to track interactions with your AI models. In the Melodi UI, threads are called "Sessions", similar to how "sessions" is used to describe user activity on a website or app.
 
-Threads are composed of messages, which have an externalID, role (user, assistant, RAG lookup, etc.) and message content. You can also add metadata to threads, which will allow you to filter and segment your data in the UI. 
+Threads are composed of messages, which have an externalID, role (user, assistant, RAG lookup, etc.) and message content. You can also add metadata to threads, which will allow you to filter and segment your data in the UI.
 
 [View the sessions page in the Melodi UI](https://app.melodi.fyi/admin/threads)
 ![sessions page](../images/logged-threads.png)
 
 ### Message Types
 
+Messages in a thread can be one of two types: `markdown` or `json`. All messages require a `role` field, and can optionally include `metadata` and `externalId`.
 
-Messages in a thread can be one of two types: `markdown` or `json`. All messages require a `role` field, and can optionally include `metadata` and `externalId`. 
-
-<Tip>Roles labeled as "user" will be rendered green in the UI, while "assistant" will be rendered blue. All other strings appear gray.</Tip>
+<Tip>
+  Roles labeled as "user" will be rendered green in the UI, while "assistant"
+  will be rendered blue. All other strings appear gray.
+</Tip>
 
 <Tabs>
   <Tab title="Markdown Messages">
@@ -43,6 +46,7 @@ Messages in a thread can be one of two types: `markdown` or `json`. All messages
       metadata: {} // optional
     }
     ```
+
   </Tab>
   <Tab title="JSON Messages">
     **JSON Messages**
@@ -61,16 +65,15 @@ Messages in a thread can be one of two types: `markdown` or `json`. All messages
       metadata: {} // optional
     }
     ```
+
   </Tab>
 </Tabs>
-
 
 ### Visual Example
 
 Here's how your thread will appear in the Melodi dashboard:
 
 ![Thread Render](../images/render-thread.png)
-
 
 ## User Feedback
 
@@ -102,18 +105,19 @@ When creating feedback, you need to specify:
 
 User feedback can be collected via the Melodi feedback widget or through your own feedback UI with Melodi's [feedback API](/api-reference/create-feedback).
 
-Feedback will appear on the session page. 
+Feedback will appear on the session page.
 ![Feedback display](../images/feedback-display.png)
 
 Feedback will also appear on the Melodi dashboard.
 
-
 ## Users
-Tracking user data is not required, but highly recommended in order to calculate metrics like active users, retention, and churn. User segments are useful for tracking categories like "internal" vs "external" users, or "paid" vs "free" users. Users are available on the /users page in the Melodi UI. 
+
+Tracking user data is not required, but highly recommended in order to calculate metrics like active users, retention, and churn. User segments are useful for tracking categories like "internal" vs "external" users, or "paid" vs "free" users. Users are available on the /users page in the Melodi UI.
 
 ![Users display](../images/users-display.png)
 
 Users can be created or updated with the following information:
+
 - Required: `externalId` (unique identifier for the user)
 - Optional:
   - `email`
@@ -142,6 +146,7 @@ Melodi uses external IDs to make it easy to reference your data without having t
 - Users (`externalUserId`)
 
 These external IDs can then be used in subsequent API calls. For example, when creating feedback, you can reference the thread, message, and user using their external IDs:
+
 ```typescript
 {
 externalThreadId: "chat_123",
