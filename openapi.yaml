@@ -367,10 +367,7 @@ components:
         messages:
           type: array
           items:
-            oneOf:
-              - $ref: "#/components/schemas/MarkdownMessage"
-              - $ref: "#/components/schemas/JsonMessage"
-          description: Array of messages associated with the thread
+            $ref: "#/components/schemas/Message"
         externalUser:
           nullable: true
           allOf:
@@ -652,9 +649,7 @@ components:
             messages:
               type: array
               items:
-                oneOf:
-                  - $ref: "#/components/schemas/MarkdownMessage"
-                  - $ref: "#/components/schemas/JsonMessage"
+                $ref: "#/components/schemas/Message"
             metadata:
               type: object
               additionalProperties:
@@ -678,9 +673,7 @@ components:
             messages:
               type: array
               items:
-                oneOf:
-                  - $ref: "#/components/schemas/MarkdownMessage"
-                  - $ref: "#/components/schemas/JsonMessage"
+                $ref: "#/components/schemas/Message"
             metadata:
               type: object
               additionalProperties:
