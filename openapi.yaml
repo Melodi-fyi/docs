@@ -17,20 +17,16 @@ paths:
         - in: query
           name: ids
           schema:
-            oneOf:
-              - type: integer
-              - type: array
-                items:
-                  type: integer
+            type: array
+            items:
+              type: integer
           description: Single thread ID or list of thread IDs to filter by
         - in: query
           name: externalUserIds
           schema:
-            oneOf:
-              - type: string
-              - type: array
-                items:
-                  type: string
+            type: array
+            items:
+              type: string
           description: Single external user ID or list of external user IDs to filter by
         - in: query
           name: search
@@ -59,11 +55,9 @@ paths:
         - in: query
           name: userSegmentIds
           schema:
-            oneOf:
-              - type: integer
-              - type: array
-                items:
-                  type: integer
+            type: array
+            items:
+              type: integer
           description: Single user segment ID or list of user segment IDs to filter by
         - in: query
           name: before
@@ -90,7 +84,7 @@ paths:
             default: 0
           description: Page index for pagination
       responses:
-        '200':
+        "200":
           description: Successfully retrieved list of threads
           content:
             application/json:
@@ -102,13 +96,13 @@ paths:
                   rows:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Thread'
+                      $ref: "#/components/schemas/Thread"
                 required:
                   - count
                   - rows
-        '401':
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
     post:
       summary: Create a new thread
@@ -121,17 +115,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateThreadRequest'
+              $ref: "#/components/schemas/CreateThreadRequest"
       responses:
-        '201':
+        "201":
           description: Thread successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Thread'
-        '401':
+                $ref: "#/components/schemas/Thread"
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
     put:
       summary: Update an existing thread
@@ -141,17 +135,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateThreadRequest'
+              $ref: "#/components/schemas/CreateThreadRequest"
       responses:
-        '200':
+        "200":
           description: Thread successfully updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Thread'
-        '401':
+                $ref: "#/components/schemas/Thread"
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
 
   /feedback:
@@ -167,32 +161,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FeedbackCreateRequest'
+              $ref: "#/components/schemas/FeedbackCreateRequest"
       responses:
-        '200':
+        "200":
           description: Feedback successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExternalFeedback'
-        '400':
+                $ref: "#/components/schemas/ExternalFeedback"
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '401':
+                $ref: "#/components/schemas/Error"
+        "401":
           description: Unauthorized - Missing or invalid publishable API key
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /projects:
     get:
@@ -208,17 +202,17 @@ paths:
             type: string
           description: The ID of the organization to retrieve projects for
       responses:
-        '200':
+        "200":
           description: Successfully retrieved projects
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Project'
-        '401':
+                  $ref: "#/components/schemas/Project"
+        "401":
           description: Unauthorized
-        '500':
+        "500":
           description: Internal Server Error
 
     post:
@@ -231,32 +225,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateProjectRequest'
+              $ref: "#/components/schemas/CreateProjectRequest"
       responses:
-        '201':
+        "201":
           description: Project successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Project'
-        '400':
+                $ref: "#/components/schemas/Project"
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '401':
+                $ref: "#/components/schemas/Error"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /users:
     put:
@@ -299,12 +293,12 @@ paths:
                   description: Key-value pairs where the key is the segment type name and the value is the segment value
                   default: {}
       responses:
-        '200':
+        "200":
           description: External user successfully created or updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExternalUser'
+                $ref: "#/components/schemas/ExternalUser"
               example:
                 id: 123
                 organizationId: 456
@@ -312,27 +306,25 @@ paths:
                 name: "John Doe"
                 email: "user@example.com"
                 username: "johndoe"
-                segments: [
-                  {
-                    id: 789,
-                    name: "developer",
-                    type: {
-                      id: 101,
-                      name: "role"
-                    }
-                  }
-                ]
+                segments:
+                  [
+                    {
+                      id: 789,
+                      name: "developer",
+                      type: { id: 101, name: "role" },
+                    },
+                  ]
                 createdAt: "2024-03-21T00:00:00Z"
                 updatedAt: "2024-03-21T00:00:00Z"
-        '400':
+        "400":
           description: Bad Request - Invalid input data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '401':
+                $ref: "#/components/schemas/Error"
+        "401":
           description: Unauthorized - Invalid or missing API key
-        '500':
+        "500":
           description: Internal Server Error
 
 components:
@@ -375,13 +367,13 @@ components:
           type: array
           items:
             oneOf:
-              - $ref: '#/components/schemas/MarkdownMessage'
-              - $ref: '#/components/schemas/JsonMessage'
+              - $ref: "#/components/schemas/MarkdownMessage"
+              - $ref: "#/components/schemas/JsonMessage"
           description: Array of messages associated with the thread
         externalUser:
           nullable: true
           allOf:
-            - $ref: '#/components/schemas/CreateExternalUserRequest'
+            - $ref: "#/components/schemas/CreateExternalUserRequest"
         metadata:
           type: object
           description: Metadata associated with the thread
@@ -407,8 +399,8 @@ components:
           nullable: true
         type:
           type: string
-          enum: ['markdown']
-          default: 'markdown'
+          enum: ["markdown"]
+          default: "markdown"
         role:
           type: string
         content:
@@ -431,7 +423,7 @@ components:
           nullable: true
         type:
           type: string
-          enum: ['json']
+          enum: ["json"]
         role:
           type: string
         jsonContent:
@@ -452,8 +444,8 @@ components:
         For Markdown messages, use the 'content' field.
         For JSON messages, use the 'jsonContent' field.
       oneOf:
-        - $ref: '#/components/schemas/MarkdownMessage'
-        - $ref: '#/components/schemas/JsonMessage'
+        - $ref: "#/components/schemas/MarkdownMessage"
+        - $ref: "#/components/schemas/JsonMessage"
 
     Error:
       type: object
@@ -471,7 +463,7 @@ components:
       properties:
         feedbackType:
           type: string
-          enum: ['POSITIVE', 'NEGATIVE']
+          enum: ["POSITIVE", "NEGATIVE"]
           description: Type of feedback
         feedbackText:
           type: string
@@ -492,7 +484,7 @@ components:
           nullable: true
           description: External user information for associating feedback with a user
           allOf:
-            - $ref: '#/components/schemas/CreateExternalUserRequest'
+            - $ref: "#/components/schemas/CreateExternalUserRequest"
         attributes:
           type: object
           description: |
@@ -554,16 +546,16 @@ components:
           nullable: true
           description: Information about the external user who provided the feedback
           allOf:
-            - $ref: '#/components/schemas/CreateExternalUserRequest'
+            - $ref: "#/components/schemas/CreateExternalUserRequest"
         attributeOptions:
           type: array
           items:
             allOf:
-              - $ref: '#/components/schemas/AttributeOption'
+              - $ref: "#/components/schemas/AttributeOption"
               - type: object
                 properties:
                   attribute:
-                    $ref: '#/components/schemas/Attribute'
+                    $ref: "#/components/schemas/Attribute"
                 required:
                   - attribute
           description: List of attribute options with their full attribute details
@@ -597,12 +589,12 @@ components:
           - type: string
           - type: number
           - type: boolean
-          - $ref: '#/components/schemas/JSONObject'
-          - $ref: '#/components/schemas/JSONArray'
+          - $ref: "#/components/schemas/JSONObject"
+          - $ref: "#/components/schemas/JSONArray"
     JSONArray:
       type: array
       items:
-        $ref: '#/components/schemas/JSONObject'
+        $ref: "#/components/schemas/JSONObject"
 
     Project:
       type: object
@@ -650,8 +642,8 @@ components:
               type: array
               items:
                 oneOf:
-                  - $ref: '#/components/schemas/MarkdownMessage'
-                  - $ref: '#/components/schemas/JsonMessage'
+                  - $ref: "#/components/schemas/MarkdownMessage"
+                  - $ref: "#/components/schemas/JsonMessage"
             metadata:
               type: object
               additionalProperties:
@@ -659,7 +651,7 @@ components:
             externalUser:
               nullable: true
               allOf:
-                - $ref: '#/components/schemas/CreateExternalUserRequest'
+                - $ref: "#/components/schemas/CreateExternalUserRequest"
         - title: "Create Thread with Project Name"
           type: object
           required: [messages, projectName]
@@ -676,8 +668,8 @@ components:
               type: array
               items:
                 oneOf:
-                  - $ref: '#/components/schemas/MarkdownMessage'
-                  - $ref: '#/components/schemas/JsonMessage'
+                  - $ref: "#/components/schemas/MarkdownMessage"
+                  - $ref: "#/components/schemas/JsonMessage"
             metadata:
               type: object
               additionalProperties:
@@ -685,7 +677,7 @@ components:
             externalUser:
               nullable: true
               allOf:
-                - $ref: '#/components/schemas/CreateExternalUserRequest'
+                - $ref: "#/components/schemas/CreateExternalUserRequest"
 
     Attribute:
       type: object
@@ -711,7 +703,7 @@ components:
         options:
           type: array
           items:
-            $ref: '#/components/schemas/AttributeOption'
+            $ref: "#/components/schemas/AttributeOption"
           description: List of options available for this attribute
         createdAt:
           type: string
@@ -876,21 +868,3 @@ components:
           example: { "team": "engineering", "role": "developer" }
       required:
         - externalId
-
-    UserSegment:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-          description: Unique identifier for the user segment
-        name:
-          type: string
-          description: Name of the segment
-        value:
-          type: string
-          description: Value associated with the segment
-      required:
-        - id
-        - name
-        - value
