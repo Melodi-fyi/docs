@@ -698,9 +698,6 @@ components:
               nullable: true
             projectId:
               type: number
-            projectName:
-              type: string
-              nullable: true
             messages:
               type: array
               items:
@@ -719,9 +716,6 @@ components:
           properties:
             externalId:
               type: string
-              nullable: true
-            projectId:
-              type: number
               nullable: true
             projectName:
               type: string
