@@ -105,9 +105,12 @@ paths:
         "500":
           description: Internal Server Error
     put:
-      summary: Update an existing thread
+      summary: Create a new thread or update an existing thread
+      security:
+        - ApiKeyHeader: []
+        - ApiKeyQueryParam: []
       requestBody:
-        description: A thread object that needs to be updated
+        description: The full thread object
         required: true
         content:
           application/json:
@@ -115,7 +118,7 @@ paths:
               $ref: "#/components/schemas/CreateThreadRequest"
       responses:
         "200":
-          description: Thread successfully updated
+          description: Thread successfully created or updated
           content:
             application/json:
               schema:
