@@ -104,29 +104,6 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
-    post:
-      summary: Create a new thread
-      security:
-        - ApiKeyHeader: []
-        - ApiKeyQueryParam: []
-      requestBody:
-        description: A thread object that needs to be created
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateThreadRequest"
-      responses:
-        "201":
-          description: Thread successfully created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Thread"
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
     put:
       summary: Update an existing thread
       requestBody:
