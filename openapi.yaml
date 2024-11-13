@@ -687,50 +687,50 @@ components:
       required:
         - name
 
-    CreateThreadRequest:
-      oneOf:
-        - title: "Create Thread with Project ID"
+    BaseCreateThreadRequest:
+      type: object
+      properties:
+        externalId:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateMessageRequest"
+        metadata:
           type: object
-          required: [messages, projectId]
+          additionalProperties:
+            type: string
+        externalUser:
+          $ref: "#/components/schemas/CreateExternalUserRequest"
+      required:
+        - messages
+
+    CreateThreadWithProjectIdRequest:
+      title: "Create Thread with Project ID"
+      allOf:
+        - $ref: "#/components/schemas/BaseCreateThreadRequest"
+        - type: object
           properties:
-            externalId:
-              type: string
-              nullable: true
             projectId:
               type: number
-            messages:
-              type: array
-              items:
-                $ref: "#/components/schemas/CreateMessageRequest"
-            metadata:
-              type: object
-              additionalProperties:
-                type: string
-            externalUser:
-              nullable: true
-              allOf:
-                - $ref: "#/components/schemas/CreateExternalUserRequest"
-        - title: "Create Thread with Project Name"
-          type: object
-          required: [messages, projectName]
+          required:
+            - projectId
+
+    CreateThreadWithProjectNameRequest:
+      title: "Create Thread with Project Name"
+      allOf:
+        - $ref: "#/components/schemas/BaseCreateThreadRequest"
+        - type: object
           properties:
-            externalId:
-              type: string
-              nullable: true
             projectName:
               type: string
-            messages:
-              type: array
-              items:
-                $ref: "#/components/schemas/CreateMessageRequest"
-            metadata:
-              type: object
-              additionalProperties:
-                type: string
-            externalUser:
-              nullable: true
-              allOf:
-                - $ref: "#/components/schemas/CreateExternalUserRequest"
+          required:
+            - projectName
+
+    CreateThreadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/CreateThreadWithProjectIdRequest"
+        - $ref: "#/components/schemas/CreateThreadWithProjectNameRequest"
 
     Attribute:
       type: object
