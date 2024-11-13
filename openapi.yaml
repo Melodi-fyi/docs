@@ -245,31 +245,8 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - externalId
-              properties:
-                externalId:
-                  type: string
-                  description: External identifier for the user
-                email:
-                  type: string
-                  nullable: true
-                  description: User's email address
-                name:
-                  type: string
-                  nullable: true
-                  description: User's name
-                username:
-                  type: string
-                  nullable: true
-                  description: User's username
-                segments:
-                  type: object
-                  additionalProperties:
-                    type: string
-                  description: Key-value pairs where the key is the segment type name and the value is the segment value
-                  default: {}
+              $ref: "#/components/schemas/CreateExternalUserRequest"
+
       responses:
         "200":
           description: External user successfully created or updated
