@@ -645,20 +645,6 @@ components:
       required:
         - email
 
-    JSONObject:
-      type: object
-      additionalProperties:
-        oneOf:
-          - type: string
-          - type: number
-          - type: boolean
-          - $ref: "#/components/schemas/JSONObject"
-          - $ref: "#/components/schemas/JSONArray"
-    JSONArray:
-      type: array
-      items:
-        $ref: "#/components/schemas/JSONObject"
-
     Project:
       type: object
       properties:
