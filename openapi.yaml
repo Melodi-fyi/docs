@@ -132,6 +132,7 @@ paths:
         This API can be used instead of our Feedback UI component (thumbs up/down) to create feedbacks that will be visible in the Feedback Inbox.
         Note: This endpoint requires a publishable API key as a query parameter only.
       security:
+        - ApiKeyHeader: []
         - ApiKeyQueryParam: []
       requestBody:
         required: true
@@ -309,7 +310,7 @@ components:
     ApiKeyHeader:
       type: apiKey
       in: header
-      name: API-Key
+      name: api-key
       description: Your Melodi API key
     ApiKeyQueryParam:
       type: apiKey
