@@ -862,7 +862,6 @@ components:
           description: |
             Key-value pairs of segment information.
             Will be transformed to empty object if null or undefined.
-          default: {}
           example: { "team": "engineering", "role": "developer" }
       required:
         - externalId
