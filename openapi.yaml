@@ -104,33 +104,13 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
-    post:
-      summary: Create a new thread
+    put:
+      summary: Create a new thread or update an existing thread
       security:
         - ApiKeyHeader: []
         - ApiKeyQueryParam: []
       requestBody:
-        description: A thread object that needs to be created
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateThreadRequest"
-      responses:
-        "201":
-          description: Thread successfully created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Thread"
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-    put:
-      summary: Update an existing thread
-      requestBody:
-        description: A thread object that needs to be updated
+        description: The full thread object
         required: true
         content:
           application/json:
@@ -138,7 +118,7 @@ paths:
               $ref: "#/components/schemas/CreateThreadRequest"
       responses:
         "200":
-          description: Thread successfully updated
+          description: Thread successfully created or updated
           content:
             application/json:
               schema:
@@ -155,6 +135,7 @@ paths:
         This API can be used instead of our Feedback UI component (thumbs up/down) to create feedbacks that will be visible in the Feedback Inbox.
         Note: This endpoint requires a publishable API key as a query parameter only.
       security:
+        - ApiKeyHeader: []
         - ApiKeyQueryParam: []
       requestBody:
         required: true
@@ -267,31 +248,8 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - externalId
-              properties:
-                externalId:
-                  type: string
-                  description: External identifier for the user
-                email:
-                  type: string
-                  nullable: true
-                  description: User's email address
-                name:
-                  type: string
-                  nullable: true
-                  description: User's name
-                username:
-                  type: string
-                  nullable: true
-                  description: User's username
-                segments:
-                  type: object
-                  additionalProperties:
-                    type: string
-                  description: Key-value pairs where the key is the segment type name and the value is the segment value
-                  default: {}
+              $ref: "#/components/schemas/CreateExternalUserRequest"
+
       responses:
         "200":
           description: External user successfully created or updated
@@ -332,7 +290,7 @@ components:
     ApiKeyHeader:
       type: apiKey
       in: header
-      name: API-Key
+      name: api-key
       description: Your Melodi API key
     ApiKeyQueryParam:
       type: apiKey
@@ -347,7 +305,6 @@ components:
         id:
           type: number
           description: Unique identifier for the thread
-          nullable: true
         externalId:
           type: string
           description: External thread ID
@@ -355,21 +312,20 @@ components:
         organizationId:
           type: number
           description: ID of the organization to which the thread belongs
-        projectId:
-          type: number
-          description: ID of the project to which the thread belongs, specify either projectId or projectName
-          nullable: true
-        projectName:
-          type: string
-          description: Name of the project to which the thread belongs, specify either projectId or projectName
-          nullable: true
+        project:
+          type: object
+          properties:
+            id:
+              type: number
+            name:
+              type: string
+          required:
+            - id
+            - name
         messages:
           type: array
           items:
-            oneOf:
-              - $ref: "#/components/schemas/MarkdownMessage"
-              - $ref: "#/components/schemas/JsonMessage"
-          description: Array of messages associated with the thread
+            $ref: "#/components/schemas/Message"
         externalUser:
           nullable: true
           allOf:
@@ -388,55 +344,73 @@ components:
           format: date-time
           description: Date when the thread was last updated
       required:
+        - id
+        - organizationId
+        - project
         - messages
+        - metadata
+        - createdAt
+        - updatedAt
+
+    BaseMessage:
+      type: object
+      properties:
+        externalId:
+          type: string
+          nullable: true
+        role:
+          type: string
+      required:
+        - role
+
+    BaseMessageResponse:
+      allOf:
+        - $ref: "#/components/schemas/BaseMessage"
+        - type: object
+          properties:
+            metadata:
+              type: object
+              additionalProperties:
+                type: string
+              default: {}
+          required:
+            - metadata
 
     MarkdownMessage:
       title: "Markdown Message"
-      type: object
-      properties:
-        externalId:
-          type: string
-          nullable: true
-        type:
-          type: string
-          enum: ["markdown"]
-          default: "markdown"
-        role:
-          type: string
-        content:
-          type: string
-          nullable: true
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          default: {}
-      required:
-        - role
+      allOf:
+        - $ref: "#/components/schemas/BaseMessageResponse"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: ["markdown"]
+              default: "markdown"
+            content:
+              type: string
+              nullable: true
+          required:
+            - content
+            - type
+            - metadata
 
     JsonMessage:
       title: "JSON Message"
-      type: object
-      properties:
-        externalId:
-          type: string
-          nullable: true
-        type:
-          type: string
-          enum: ["json"]
-        role:
-          type: string
-        jsonContent:
-          type: object
-          additionalProperties: true
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          default: {}
-      required:
-        - role
-        - jsonContent
+      allOf:
+        - $ref: "#/components/schemas/BaseMessageResponse"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: ["json"]
+              default: "json"
+            jsonContent:
+              type: object
+              additionalProperties: true
+          required:
+            - jsonContent
+            - type
+            - metadata
 
     Message:
       description: |
@@ -446,6 +420,53 @@ components:
       oneOf:
         - $ref: "#/components/schemas/MarkdownMessage"
         - $ref: "#/components/schemas/JsonMessage"
+
+    BaseMessageCreateRequest:
+      allOf:
+        - $ref: "#/components/schemas/BaseMessage"
+        - type: object
+          properties:
+            metadata:
+              type: object
+              additionalProperties:
+                type: string
+              nullable: true
+
+    CreateMarkdownMessageRequest:
+      allOf:
+        - $ref: "#/components/schemas/BaseMessageCreateRequest"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: ["markdown"]
+              default: "markdown"
+            content:
+              type: string
+          required:
+            - type
+            - content
+
+    CreateJsonMessageRequest:
+      allOf:
+        - $ref: "#/components/schemas/BaseMessageCreateRequest"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: ["json"]
+              default: "json"
+            jsonContent:
+              type: object
+              additionalProperties: true
+          required:
+            - type
+            - jsonContent
+
+    CreateMessageRequest:
+      oneOf:
+        - $ref: "#/components/schemas/CreateMarkdownMessageRequest"
+        - $ref: "#/components/schemas/CreateJsonMessageRequest"
 
     Error:
       type: object
@@ -468,20 +489,16 @@ components:
         feedbackText:
           type: string
           description: Text content of the feedback
-          nullable: true
         externalThreadId:
           type: string
           description: External ID of the thread containing the target message
         externalMessageId:
           type: string
           description: ID of the specific message for feedback. If not provided, feedback will be attached to the thread's last message
-          nullable: true
         projectId:
           type: integer
           description: Recommended - ID of the project this thread belongs to. Helps ensure correct thread identification
-          nullable: true
         externalUser:
-          nullable: true
           description: External user information for associating feedback with a user
           allOf:
             - $ref: "#/components/schemas/CreateExternalUserRequest"
@@ -571,31 +588,6 @@ components:
         - createdAt
         - updatedAt
 
-    UserInfo:
-      type: object
-      properties:
-        id:
-          type: string
-          nullable: true
-        email:
-          type: string
-      required:
-        - email
-
-    JSONObject:
-      type: object
-      additionalProperties:
-        oneOf:
-          - type: string
-          - type: number
-          - type: boolean
-          - $ref: "#/components/schemas/JSONObject"
-          - $ref: "#/components/schemas/JSONArray"
-    JSONArray:
-      type: array
-      items:
-        $ref: "#/components/schemas/JSONObject"
-
     Project:
       type: object
       properties:
@@ -624,60 +616,50 @@ components:
       required:
         - name
 
+    BaseCreateThreadRequest:
+      type: object
+      properties:
+        externalId:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateMessageRequest"
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        externalUser:
+          $ref: "#/components/schemas/CreateExternalUserRequest"
+      required:
+        - messages
+
+    CreateThreadWithProjectIdRequest:
+      title: "Create Thread with Project ID"
+      allOf:
+        - $ref: "#/components/schemas/BaseCreateThreadRequest"
+        - type: object
+          properties:
+            projectId:
+              type: number
+          required:
+            - projectId
+
+    CreateThreadWithProjectNameRequest:
+      title: "Create Thread with Project Name"
+      allOf:
+        - $ref: "#/components/schemas/BaseCreateThreadRequest"
+        - type: object
+          properties:
+            projectName:
+              type: string
+          required:
+            - projectName
+
     CreateThreadRequest:
       oneOf:
-        - title: "Create Thread with Project ID"
-          type: object
-          required: [messages, projectId]
-          properties:
-            externalId:
-              type: string
-              nullable: true
-            projectId:
-              type: number
-            projectName:
-              type: string
-              nullable: true
-            messages:
-              type: array
-              items:
-                oneOf:
-                  - $ref: "#/components/schemas/MarkdownMessage"
-                  - $ref: "#/components/schemas/JsonMessage"
-            metadata:
-              type: object
-              additionalProperties:
-                type: string
-            externalUser:
-              nullable: true
-              allOf:
-                - $ref: "#/components/schemas/CreateExternalUserRequest"
-        - title: "Create Thread with Project Name"
-          type: object
-          required: [messages, projectName]
-          properties:
-            externalId:
-              type: string
-              nullable: true
-            projectId:
-              type: number
-              nullable: true
-            projectName:
-              type: string
-            messages:
-              type: array
-              items:
-                oneOf:
-                  - $ref: "#/components/schemas/MarkdownMessage"
-                  - $ref: "#/components/schemas/JsonMessage"
-            metadata:
-              type: object
-              additionalProperties:
-                type: string
-            externalUser:
-              nullable: true
-              allOf:
-                - $ref: "#/components/schemas/CreateExternalUserRequest"
+        - $ref: "#/components/schemas/CreateThreadWithProjectIdRequest"
+        - $ref: "#/components/schemas/CreateThreadWithProjectNameRequest"
 
     Attribute:
       type: object
@@ -846,25 +828,20 @@ components:
           description: External identifier for the user
         email:
           type: string
-          nullable: true
           description: User's email address. Will be transformed to undefined if null
         name:
           type: string
-          nullable: true
           description: User's name. Will be transformed to undefined if null
         username:
           type: string
-          nullable: true
           description: User's username. Will be transformed to undefined if null
         segments:
           type: object
           additionalProperties:
             type: string
-          nullable: true
           description: |
             Key-value pairs of segment information.
             Will be transformed to empty object if null or undefined.
-          default: {}
           example: { "team": "engineering", "role": "developer" }
       required:
         - externalId
