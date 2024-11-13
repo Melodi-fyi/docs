@@ -509,20 +509,16 @@ components:
         feedbackText:
           type: string
           description: Text content of the feedback
-          nullable: true
         externalThreadId:
           type: string
           description: External ID of the thread containing the target message
         externalMessageId:
           type: string
           description: ID of the specific message for feedback. If not provided, feedback will be attached to the thread's last message
-          nullable: true
         projectId:
           type: integer
           description: Recommended - ID of the project this thread belongs to. Helps ensure correct thread identification
-          nullable: true
         externalUser:
-          nullable: true
           description: External user information for associating feedback with a user
           allOf:
             - $ref: "#/components/schemas/CreateExternalUserRequest"
@@ -852,21 +848,17 @@ components:
           description: External identifier for the user
         email:
           type: string
-          nullable: true
           description: User's email address. Will be transformed to undefined if null
         name:
           type: string
-          nullable: true
           description: User's name. Will be transformed to undefined if null
         username:
           type: string
-          nullable: true
           description: User's username. Will be transformed to undefined if null
         segments:
           type: object
           additionalProperties:
             type: string
-          nullable: true
           description: |
             Key-value pairs of segment information.
             Will be transformed to empty object if null or undefined.
