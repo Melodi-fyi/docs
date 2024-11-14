@@ -1,5 +1,5 @@
 {
-  "openapi": ["/openapi.yaml"],
+  "openapi": "https://app.melodi.fyi/openapi.yaml",
   "$schema": "https://mintlify.com/schema.json",
   "name": "Melodi Docs",
   "logo": {
