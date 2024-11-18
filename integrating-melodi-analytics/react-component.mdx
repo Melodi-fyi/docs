@@ -64,6 +64,8 @@ The React feedback component adds thumbs up/thumbs down buttons and a feedback p
         email: 'user@example.com'
       }}
       companyName="My Company"
+      // Optional: Set the feedback widget variant
+      // variant="flag"
     />
     ```
     <Warning>Only threads that contain feedback will be displayed in the Melodi dashboard. To unlock analytics for all sessions, we recommend creating threads via the SDK then referencing them in the widget.</Warning>
@@ -76,7 +78,7 @@ The React feedback component adds thumbs up/thumbs down buttons and a feedback p
     const thread = await melodi.threads.create({
       projectName: 'My Project',
       externalId: 'chat-session-123', // Your custom ID
-messages: [
+      messages: [
         {
           "externalId": "1",
           "role": "user",
@@ -87,7 +89,10 @@ messages: [
           "role": "assistant",
           "content": "Hi! How can I help you today?"
         }
-      ],      metadata: { environment: 'production' }
+      ],
+      metadata: {
+        environment: 'production'
+      }
     });
 
     // Then reference either the Melodi threadId or your externalId
@@ -101,6 +106,8 @@ messages: [
         email: 'user@example.com'
       }}
       companyName="My Company"
+      // Optional: Set the feedback widget variant
+      // variant="flag"
     />
     ```
     <Check>
@@ -127,4 +134,19 @@ messages: [
 
 <ResponseField name="companyName" type="string" required>
   Your company name to display in the feedback popover
+</ResponseField>
+
+<ResponseField name="variant" type="string">
+  Set the feedback widget variant<br />
+  Options:
+  <ul>
+    <li>
+      `thumbs` (default): Thumbs up/down buttons
+      <img src="/images/thumbs.png" alt="Thumbs Up/Down screenshot" width="64px"/>
+    </li>
+    <li>
+      `flag`: Flag button
+      <img src="/images/flag.png" alt="Flag screenshot" width="142px"/>
+    </li>
+  </ul>
 </ResponseField>
