@@ -60,6 +60,12 @@
       ]
     },
     {
+      "group": "Monitoring",
+      "pages": [
+        "monitoring/user-intents"
+      ]
+    },
+    {
       "group": "Specific API Endpoints",
       "pages": [
         "api-reference/create-thread",
