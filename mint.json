@@ -45,18 +45,9 @@
     {
       "group": "Getting Started",
       "pages": [
-        {
-          "name": "What is Melodi",
-          "url": "getting-started/what-is-melodi"
-        },
-        {
-          "name": "Quickstart",
-          "url": "getting-started/quickstart"
-        },
-        {
-          "name": "Data Privacy",
-          "url": "getting-started/data-privacy"
-        }
+        "getting-started/what-is-melodi",
+        "getting-started/quickstart",
+        "getting-started/data-privacy"
       ]
     },
     {
