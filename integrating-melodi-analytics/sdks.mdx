@@ -63,7 +63,7 @@ print(new_project.id)
 </CodeGroup>
 
 ## Create a thread in Melodi
-Threads are a flexible data format that support customizable message types, including user, AI response, RAG lookup, and other.
+Threads are a flexible data format that support customizable message types, including user, AI response, RAG lookup, and other. You can optionally specify when a thread was created using the `createdAt` field.
 
 <CodeGroup>
 ```python create_thread.py
@@ -121,7 +121,8 @@ thread = Thread(
     projectName="Melodi SDK Test",
     externalId=threadExternalId,
     messages=[message1, message2, message3, message4, message5],
-    externalUser=externalUser
+    externalUser=externalUser,
+    createdAt=datetime(2024, 1, 1, 12, 0, 0)  # Example date
 )
 melodi_thread = melodiClient.threads.create_or_update(thread)
 
@@ -176,6 +177,7 @@ async function createExampleThread() {
       }
     ],
     externalUser,
+    createdAt: new Date("2024-01-01T12:00:00Z")  // Example date
   };
 
   const response1 = await createOrUpdateThread(createThreadRequest);
@@ -303,5 +305,35 @@ async function createExampleUser() {
   return user;
 }
 
+```
+</CodeGroup>
+
+## Backdate threads
+When importing historical conversations or maintaining accurate timestamps, you can specify when a thread was created using the `createdAt` field.
+
+This is particularly useful when:
+- Importing historical conversations from another system
+- Maintaining accurate timestamps for analytics
+- Recording conversations that happened in the past
+
+<CodeGroup>
+```python backdate_thread.py
+thread = Thread(
+    projectName="Melodi SDK Test",
+    externalId=threadExternalId,
+    messages=[message1, message2, message3, message4, message5],
+    externalUser=externalUser,
+    createdAt=datetime(2024, 1, 1, 12, 0, 0)  # Example date
+)
+```
+
+```typescript backdate-thread.ts
+const createThreadRequest: CreateThreadRequest = {
+    projectId: 64,
+    externalId: externalThreadId,
+    messages: [message1, message2, message3, message4, message5],
+    externalUser,
+    createdAt: new Date("2024-01-01T12:00:00Z")  // Example date
+};
 ```
 </CodeGroup>
