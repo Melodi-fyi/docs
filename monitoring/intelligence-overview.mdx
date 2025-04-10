@@ -1,0 +1,43 @@
+---
+title: 'Melodi Intelligence & Automated Evaluations'
+description: "Understanding Melodis automated insights: Session Outcome, User Intents, and Issue Monitoring."
+icon: "sparkles"
+iconType: "regular"
+---
+
+## Introducing Melodi Intelligence
+
+Melodi goes beyond basic logging to provide actionable insights into your AI agent's performance and user interactions. We call these derived insights **Melodi Intelligence**. The goal is to automatically surface key information that helps product managers, operations teams, and developers understand user behavior, measure experience, and pinpoint areas for improvement – often without needing deep data science expertise.
+
+Under the hood, many of these intelligence features rely on **Automated Evaluations**, typically using sophisticated Large Language Models (LLMs) acting as evaluators or "judges." These models analyze session data to infer characteristics like user satisfaction, the user's goal, or whether a conversation represents a known issue.
+
+This approach allows Melodi to provide valuable metrics and classifications out-of-the-box, even when explicit user feedback is limited.
+
+## Core Intelligence Features
+
+Melodi provides several key automated evaluation features:
+
+### 1. Session Outcome
+
+*   **What it is:** An automated estimate of the overall user experience for each session. It predicts whether the user likely had a positive or negative interaction.
+*   **Setup:** Automatic (Zero-setup required).
+*   **Why it's useful:** Provides a comprehensive view of user satisfaction across *all* sessions, essential because explicit feedback is often sparse (1-20%). Helps track overall experience trends and the impact of agent improvements.
+*   **Learn more:** [Session Outcome Details](./session-outcome)
+
+### 2. User Intents
+
+*   **What it is:** An automated way to segment user sessions based on the user's likely goal or task. You can configure intents relevant to your specific application (e.g., "asking for refund," "troubleshooting connection," "comparing products").
+*   **Setup:** Custom Configurable (Define intents relevant to your use case).
+*   **Why it's useful:** Product teams need to understand *what* users are trying to achieve. Intents help segment usage, measure success rates for specific tasks, identify unsupported use cases, and tailor agent improvements to specific user goals. This is crucial for agents with open-ended interfaces like chatbots.
+*   **Learn more:** [User Intents Details](./user-intents)
+
+### 3. Issue Monitoring
+
+*   **What it is:** An automated system for identifying and tagging sessions that match patterns defined as "Issues." An issue represents any problematic scenario you want to track and minimize, such as agent hallucinations, users expressing frustration, interactions involving stale data, or repetitive user questions.
+*   **Setup:** Custom Configurable (Define issue patterns to monitor).
+*   **Why it's useful:** Allows teams to proactively monitor known problems, quantify their frequency, and track progress on fixes. Helps identify recurring failure modes in the agent or user journey.
+*   **Learn more:** [Issue Monitoring Details](./issues)
+
+## How Evaluations Work
+
+These Melodi Intelligence features operate on the Melodi AI platform. Logged session data (threads) are typically processed and evaluated on an approximately hourly basis. However, processing delays of up to 24 hours can sometimes occur. The results (Session Outcome scores, assigned Intents, triggered Issues) are then made available in the Melodi dashboard and API. 

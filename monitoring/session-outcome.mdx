@@ -1,6 +1,8 @@
 ---
 title: 'Session Outcome'
 description: 'Understanding the Session Outcome metric in Melodi.'
+icon: "gauge"
+iconType: "regular"
 ---
 
 ## What is Session Outcome?
@@ -28,6 +30,35 @@ By combining these elements, Melodi generates a score that reflects the likely o
 *   **Identify Problem Areas:** Quickly spot sessions or trends indicating poor user experience, allowing you to investigate and improve your agent.
 *   **Track Improvements:** Measure the impact of changes you make to your agent on overall user satisfaction.
 *   **No Setup Required:** Gain valuable insights out-of-the-box.
+
+## Using Session Outcome: The Experience Score
+
+While every individual session receives an Outcome score, the real power comes from aggregating this data to understand broader trends. Melodi automatically calculates an **Experience Score** based on Session Outcomes in several key areas:
+
+*   **Overall:** See the general experience trend across all users and sessions.
+*   **Per User:** Understand the typical experience for individual users over time.
+*   **Per User Intent:** Analyze how successful interactions are when users try to accomplish specific goals (as defined by [User Intents](./user-intents)).
+
+**Calculating the Experience Score:**
+
+The Experience Score represents the proportion of *successful* conversations. It's calculated as:
+
+$$ \text{Experience Score} = \frac{\text{Number of Successful Sessions}}{\text{Total Number of Sessions}} $$
+
+*Note: Sessions evaluated as "Partially Successful" or "Unsuccessful" are *not* included in the numerator.*
+
+**Where to Find It:**
+
+You can view aggregated Experience Scores in the Melodi platform:
+
+1.  **Users Dashboard:** See the overall Experience Score and scores for specific user segments.
+    *   ![Users list showing Experience Score](/images/users-list-with-exp-score.png)
+2.  **Individual User Record:** View the historical Experience Score for a specific user.
+    *   ![User Record showing Experience Score](/images/experience-score-user-record.jpg)
+3.  **Intents Dashboard:** Analyze the Experience Score for each configured User Intent, showing how well the agent performs specific tasks.
+    *   ![Intents dashboard showing Experience Score per Intent](/images/intent-dashboard-performance.png)
+
+This aggregation helps you move from individual session analysis to understanding systemic patterns in user experience related to specific user groups or tasks.
 
 ## Technical Deep Dive
 
