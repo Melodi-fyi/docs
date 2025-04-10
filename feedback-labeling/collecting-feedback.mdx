@@ -1,0 +1,24 @@
+---
+title: 'Collecting Feedback & Labels'
+description: 'Methods for gathering user feedback and internal labels.'
+icon: 'arrow-down-to-bracket'
+iconType: 'regular'
+---
+
+Data labels, universally referred to as "Feedback" within Melodi, can be collected from two primary sources:
+
+1.  **End-Users (via your Application):**
+    *   **Melodi React Component:** A convenient, drop-in component for adding feedback buttons (like thumbs up/down) directly to your UI. ([See Component Docs](/integrating-melodi-analytics/react-component))
+    *   **Feedback API:** Integrate Melodi's feedback endpoint with your own custom feedback interface (e.g., star ratings, surveys). ([See API Docs](/api-reference/create-feedback))
+
+2.  **Internal Teams (via Melodi Dashboard):**
+    *   Your internal subject matter experts, QA teams, or data labelers can review sessions directly within the Melodi platform and add feedback/labels.
+
+## Explicit vs. Implicit Feedback
+
+Melodi supports collecting both explicit and implicit feedback signals via the API, primarily through the Feedback API endpoint:
+
+*   **Explicit Feedback:** Direct ratings or comments provided consciously by the user (e.g., clicking thumbs up).
+*   **Implicit Feedback:** Signals derived from user behavior that indicate success or failure, sent via the API (e.g., user accepts an AI-generated recommendation, user clicks "add to cart" after an interaction, user immediately closes the chat window).
+
+You can differentiate these using custom feedback attributes when sending data to the API, allowing you to track both direct sentiment and behavioral outcomes. 

@@ -51,7 +51,7 @@
       ]
     },
     {
-      "group": "Integrating Melodi Analytics",
+      "group": "Sending Data to Melodi",
       "pages": [
         "integrating-melodi-analytics/overview",
         "integrating-melodi-analytics/api-access",
@@ -60,11 +60,22 @@
       ]
     },
     {
-      "group": "Monitoring, Observability & Feedback",
+      "group": "Melodi Intelligence & LLM Automated Evaluations",
       "pages": [
+        "monitoring/intelligence-overview",
+        "monitoring/session-outcome",
         "monitoring/user-intents",
-        "monitoring/issues",
-        "monitoring/human-review"
+        "monitoring/issues"
+      ]
+    },
+    {
+      "group": "User Feedback, Human Review, and Data Labeling",
+      "pages": [
+        "feedback-labeling/overview",
+        "feedback-labeling/collecting-feedback",
+        "feedback-labeling/customizing-types",
+        "feedback-labeling/reviewing-feedback",
+        "feedback-labeling/using-for-ml"
       ]
     },
     {

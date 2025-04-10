@@ -1,0 +1,100 @@
+---
+title: 'User Feedback, Human Review, and Data Labeling'
+description: 'Collecting user feedback and leveraging it for review and machine learning.'
+icon: 'message-smile'
+iconType: 'regular'
+---
+
+## Overview: More Than Just Feedback
+
+Melodi provides robust tools for capturing valuable insights directly from your users and internal teams. While you might think of this simply as "collecting feedback," Melodi's system is intentionally designed to bridge the gap between immediate user support and long-term AI improvement.
+
+Think of it this way:
+
+*   **For Product Managers & Operations:** It's a direct line to understanding user sentiment, identifying pain points, and enabling targeted outreach – much like a CSAT or bug reporting system.
+*   **For Data Scientists & AI Teams:** It's a structured data labeling platform, producing high-quality datasets ready for ML tasks like fine-tuning models or creating few-shot examples.
+
+Melodi ensures the feedback you collect serves both purposes seamlessly.
+
+**Learn more about:**
+
+*   [Collecting Feedback & Labels](./collecting-feedback)
+*   [Customizing Feedback Types](./customizing-types)
+*   [Reviewing Feedback (Feedback Inbox)](./reviewing-feedback)
+*   [Using Feedback Data for ML](./using-for-ml)
+
+## Collecting Feedback & Labels
+
+Data labels, universally referred to as "Feedback" within Melodi, can be collected from two primary sources:
+
+1.  **End-Users (via your Application):**
+    *   **Melodi React Component:** A convenient, drop-in component for adding feedback buttons (like thumbs up/down) directly to your UI. ([See Component Docs](/integrating-melodi-analytics/react-component))
+    *   **Feedback API:** Integrate Melodi's feedback endpoint with your own custom feedback interface (e.g., star ratings, surveys). ([See API Docs](/api-reference/create-feedback))
+
+2.  **Internal Teams (via Melodi Dashboard):**
+    *   Your internal subject matter experts, QA teams, or data labelers can review sessions directly within the Melodi platform and add feedback/labels.
+
+## Customizing Feedback Types
+
+By default, Melodi includes "Positive" and "Negative" feedback types. However, you can customize this entirely to match your specific evaluation needs. Define your own feedback types or scoring systems, such as:
+
+*   **Star Ratings:** 1-5 stars
+*   **Quality Scores:** "Excellent," "Good," "Fair," "Poor"
+*   **Sentiment:** "Happy," "Neutral," "Frustrated"
+*   **Relevance:** "Relevant," "Partially Relevant," "Irrelevant"
+*   **Task Completion:** "Goal Achieved," "Goal Not Achieved"
+*   *Any other categorical or numerical scale relevant to your analysis.*
+
+This flexibility allows you to capture nuanced evaluations beyond simple binary feedback.
+
+## Explicit vs. Implicit Feedback
+
+Melodi supports collecting both explicit and implicit feedback signals via the API:
+
+*   **Explicit Feedback:** Direct ratings or comments provided consciously by the user (e.g., clicking thumbs up).
+*   **Implicit Feedback:** Signals derived from user behavior that indicate success or failure, sent via the API (e.g., user accepts an AI-generated recommendation, user clicks "add to cart" after an interaction, user immediately closes the chat window).
+
+You can differentiate these using custom feedback attributes when sending data to the API, allowing you to track both direct sentiment and behavioral outcomes.
+
+## The Feedback Inbox: Review & Action
+
+All feedback submitted by end-users lands in the **Feedback Inbox** within the Melodi dashboard. This serves multiple purposes:
+
+*   **Review & QA:** Teams can review incoming user feedback for accuracy and consistency.
+*   **User Outreach:** Treat critical feedback as opportunities for direct user engagement, similar to support tickets or NPS follow-ups. Understand the context of the feedback by viewing the full session associated with it.
+*   **Identify Trends:** Spot recurring themes or issues highlighted by user feedback.
+
+![Feedback Inbox](/images/feedback-inbox.png)
+
+## Leveraging Feedback for Machine Learning
+
+The feedback collected (whether from end-users or internal reviewers) is structured within Melodi's data model specifically to support AI development.
+
+Data scientists can easily retrieve labeled datasets for tasks like:
+
+*   **Fine-tuning:** Use high-quality feedback data to improve the performance of your base models.
+*   **Few-Shot Prompting:** Extract examples of successful or failed interactions to use in prompts.
+*   **Evaluation Set Creation:** Build curated datasets for testing new model versions or prompts.
+*   **Offline Analysis:** Perform custom analysis on labeled data.
+
+To retrieve threads containing feedback, use the `has_feedback=true` query parameter when calling the [Get Threads API endpoint](/api-reference/get-threads).
+
+Here's a Python example using the Melodi SDK:
+
+```python
+from melodi.melodi_client import MelodiClient
+from melodi.threads.data_models import ThreadsQueryParams
+
+# Replace with your actual API key
+api_key = "YOUR_MELODI_API_KEY"
+
+# Initialize the client
+client = MelodiClient(api_key=api_key)
+
+# Set query parameters
+query_params = ThreadsQueryParams(
+    hasFeedback=True
+)
+
+# Fetch threads
+threads_response = client.threads.get(query_params)
