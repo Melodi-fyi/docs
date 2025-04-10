@@ -3,13 +3,13 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Melodi Docs",
   "logo": {
-    "dark": "/images/melodi logo.png",
-    "light": "/images/melodi logo.png"
+    "dark": "/images/Melodi Logo (dark mode).png",
+    "light": "/images/Melodi Logo.png"
   },
   "favicon": "/melodi-favicon.png",
   "theme": "venus",
   "codeBlock": {
-  "mode": "auto"
+    "mode": "auto"
   },
   "rounded": "default",
   "colors": {
@@ -34,7 +34,7 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:info@melodi.com"
+      "url": "mailto:info@melodi.app"
     }
   ],
   "topbarCtaButton": {
