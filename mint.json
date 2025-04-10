@@ -69,9 +69,13 @@
       ]
     },
     {
-      "group": "Human Review & Feedback",
+      "group": "User Feedback, Human Review, and Data Labeling",
       "pages": [
-        "monitoring/human-review"
+        "feedback-labeling/overview",
+        "feedback-labeling/collecting-feedback",
+        "feedback-labeling/customizing-types",
+        "feedback-labeling/reviewing-feedback",
+        "feedback-labeling/using-for-ml"
       ]
     },
     {

@@ -1,0 +1,89 @@
+---
+title: 'Using Feedback Data for ML'
+description: 'Retrieving curated, labeled datasets for ML model training and evaluation.'
+icon: 'brain'
+iconType: 'regular'
+---
+
+## Bridging Product Insights and ML Datasets
+
+A core strength of Melodi lies in its ability to transform real-world user interactions, reviewed and organized by product and customer experts, into valuable, structured datasets ready for Machine Learning (ML) tasks.
+
+While product managers use Melodi to understand user experience and identify trends, the platform simultaneously curates production data in an ML-friendly format. This curated data, enriched with feedback, issue tags, and user intent classifications, becomes a powerful resource for data science and ML engineering teams.
+
+Instead of relying solely on synthetic data or manually scraped examples, teams can leverage Melodi to access high-quality, production-grade data for:
+
+*   **Fine-tuning:** Improve base models using real user interactions labeled with specific feedback or outcomes.
+*   **Few-Shot Prompting:** Extract specific examples (e.g., successful completions of a task, instances of a particular failure mode) to guide LLM prompts.
+*   **Evaluation Set Creation:** Build robust evaluation datasets reflecting actual usage patterns and edge cases identified by product teams.
+*   **Training Custom Models:** Develop specialized models (e.g., for intent classification, issue detection) based on curated data.
+*   **Offline Analysis:** Perform deeper analysis on specific interaction types or user segments.
+
+## Structured for ML: The Melodi Data Model
+
+Melodi's data model stores interactions as "Threads," which contain sequences of "Messages." This structure, inspired by formats like OpenAI's but adapted for broader analytics, inherently supports multi-turn conversations and includes distinct message types (e.g., user, assistant, tool calls, RAG lookups). This organization makes it straightforward to parse and utilize conversation data for various ML techniques.
+
+## Powerful Data Retrieval: API & SDK
+
+Data scientists can retrieve precisely the data they need using Melodi's API or, more conveniently, the Python SDK. The SDK provides powerful filtering capabilities through the `ThreadsQueryParams` class, allowing you to slice and dice your production data effectively.
+
+### Key Filtering Parameters (`ThreadsQueryParams`)
+
+Here are some of the most useful parameters available when fetching threads via the SDK:
+
+*   `projectId`: Filter threads belonging to a specific project.
+*   `hasFeedback`: Retrieve only threads that have associated feedback/labels.
+*   `intentIds`: Get threads classified with specific User Intent IDs.
+*   `issueIds`: Get threads tagged with specific Issue IDs.
+*   `userSegmentIds`: Filter threads associated with users belonging to particular segments.
+*   `search`: Perform a text-based search across message content within threads.
+*   `before` / `after`: Filter threads based on creation time.
+*   `externalIds`: Retrieve specific threads using your own external identifiers.
+*   `ids`: Retrieve specific threads using Melodi's internal IDs.
+*   `includeFeedback` / `includeIntents` / `includeIssues`: Optionally include associated feedback, intent, or issue objects directly in the thread response payload (can increase response size).
+*   `pageSize` / `pageIndex`: Control pagination for large datasets.
+
+This granular filtering enables the creation of highly specific datasets tailored to the exact ML problem you're tackling.
+
+## Python SDK Example: Fetching Labeled Data
+
+Here's a concise example of using the Python SDK to fetch threads from a specific project that have feedback:
+
+```python
+from melodi.melodi_client import MelodiClient
+from melodi.threads.data_models import ThreadsQueryParams
+
+# Replace with your actual API key and project 
+api_key = "YOUR_MELODI_API_KEY"
+MY_PROJECT_ID = 99
+
+# Initialize the client
+client = MelodiClient(api_key=api_key)
+
+# Set query parameters (e.g., Project 708, has feedback)
+query_params = ThreadsQueryParams(
+    projectId=MY_PROJECT_ID,
+    hasFeedback=True,
+    # includeFeedback=True # Optionally include feedback details
+)
+
+try:
+    # Fetch threads
+    threads_response = client.threads.get(query_params)
+
+    # Process the response
+    print(f"Found {threads_response.count} threads matching criteria.")
+
+    if threads_response.rows:
+        # threads_response.rows contains the list of ThreadResponse objects
+        # Each object includes messages, metadata, user info, etc.
+        for thread_data in threads_response.rows:
+            print(f"Processing Thread ID: {thread_data.id}")
+            # Access thread_data.messages, thread_data.feedback (if included), etc.
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+```
+
+By connecting product insights with powerful data retrieval tools, Melodi empowers both product and ML teams to collaborate effectively in improving AI agent performance based on real-world usage. 

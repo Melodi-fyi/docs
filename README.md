@@ -1,1 +1,1 @@
-Vist https://docs.melodi.fyi
+Vist https://docs.melodi.app
