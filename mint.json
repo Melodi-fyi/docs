@@ -64,7 +64,8 @@
       "pages": [
         "monitoring/user-intents",
         "monitoring/issues",
-        "monitoring/human-review"
+        "monitoring/human-review",
+        "monitoring/session-outcome"
       ]
     },
     {
