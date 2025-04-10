@@ -1,34 +1,55 @@
 ---
-title: 'Automated Issue Monitoring'
-description: 'Automatically monitor issues in your sessions.'
+title: 'Issue Monitoring'
+description: 'Define and automatically monitor problematic scenarios.'
 icon: "triangle-exclamation"
 iconType: "regular"
 ---
 
 ## Overview
 
-Issues represent problems or errors that occur during a session. For example, an issue could be "payment failed" or "signup error".
+Issue Monitoring is a feature of [Melodi Intelligence](./intelligence-overview) that allows you to define and automatically track specific, problematic scenarios or patterns occurring in user sessions.
 
-Issues can be tagged manually at any time or can be configured to automatically detect new problems in your sessions.
+An "Issue" represents any category of interaction you want to flag for review or quantification, such as:
 
-## Creating a new issue
+*   Agent errors (e.g., hallucinations, incorrect information, citing stale data)
+*   User difficulties (e.g., expressing frustration, asking repetitive questions, failing to complete a task)
+*   Process failures (e.g., payment errors, integration timeouts)
 
-Issues can be created in two ways.
+**Why monitor Issues?**
 
-**1. The "Create new issue" button on the Issues page**
+*   **Proactive Detection:** Automatically identify known failure modes.
+*   **Quantify Impact:** Understand the frequency and scope of specific problems.
+*   **Track Fixes:** Measure the effectiveness of agent improvements or process changes aimed at reducing the issue.
+*   **Prioritize:** Focus efforts on the most frequent or impactful issues.
+
+Similar to User Intents, you first define an Issue and provide examples, then enable automatic monitoring.
+
+## Defining & Tagging Issues Manually
+
+Before automatic monitoring can be set up, you need to define the types of issues you want to track and provide examples.
+
+Issues can be created and tagged in several ways:
+
+### Creating a New Issue
+
+**1. From the Issues Page:** Use the "Create new issue" button.
 
 ![Create new issue](/images/create-issue.png)
 
-**2. Creating a new issue directly on a session**
+**2. Directly on a Session:** Create an issue while reviewing a specific problematic session.
 
 ![Create new issue on session](/images/create-issue-session.png)
 
-## Tagging an existing issue
+### Tagging an Existing Issue
 
-You can also tag an existing issue on a session. This is useful if you want to tag an issue that you've already identified in a session.
+You can manually apply an already defined issue tag to any relevant session. Providing clear examples is key to effective automatic monitoring.
 
-## Setting up automatic monitoring
+## Setting up Automatic Issue Monitoring
 
-Every issue can be converted into an "active" monitor, meaning that new sessions will be automatically scanned for this type of problem.
+Once an issue is defined and you have manually tagged several representative examples, you can enable automatic monitoring.
 
-<Note>Contact us at info@melodi.fyi to enable this feature for your team</Note>
+Melodi's AI will learn to identify sessions exhibiting similar patterns based on your examples. Newly ingested sessions will then be automatically scanned and tagged if they match a monitored issue pattern.
+
+<Note>Automatic Issue Monitoring currently requires activation by the Melodi team. Please contact us at info@melodi.fyi with the issues you'd like to activate for monitoring after defining them and tagging at least 5-10 examples.</Note>
+
+This feature helps you scale your monitoring efforts beyond manual review, ensuring known problems are consistently tracked over time.

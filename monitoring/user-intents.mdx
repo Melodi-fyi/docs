@@ -1,45 +1,57 @@
 ---
-title: 'Automated User Intents'
-description: 'Set up user intents to automatically monitor user behavior.'
+title: 'User Intents'
+description: 'Define and automatically track what users are trying to achieve.'
 icon: "bullseye-arrow"
 iconType: "regular"
 ---
 
 ## Overview
 
+User Intents are a core feature of [Melodi Intelligence](./intelligence-overview), designed to help you understand *what* users are trying to accomplish when interacting with your AI agent.
+
+**Why track User Intents?**
+
+*   **Segment Users:** Group sessions and users based on their goals (e.g., "troubleshoot connection," "ask about pricing").
+*   **Measure Task Success:** Analyze performance metrics (like [Experience Score](./session-outcome)) for specific tasks.
+*   **Identify Gaps:** Discover common user goals your agent doesn't currently support well.
+*   **Prioritize Improvements:** Focus development efforts on the most important or problematic user journeys.
+
+Define your intents first, then enable Melodi's AI to automatically tag new sessions based on the patterns it learns from your examples.
+
+## Defining & Tagging Intents Manually
+
+Before automation can begin, you need to define your intents and provide examples.
+
 User intents represent what the user was trying to do during a session. For example, a user intent could be "create a new account" or "find a product".
 
-User intents can be tagged manually at any time or can be configured to automatically tag new sessions.
+You can create and tag intents in several ways:
 
-## Creating a new user intent
+### Creating a New User Intent
 
-User intents can be created in two ways.
-
-**1. The "Create new intent" button on the Intents page**
+**1. From the Intents Page:** Use the "Create new intent" button.
 
 ![Create new intent](/images/create-intent.png)
 
-**2. Creating a new intent directly on a thread**
+**2. Directly on a Thread:** Create an intent while reviewing a specific session.
 
 ![Create new intent on thread](/images/create-intent-on-thread.png)
 
-## Tagging an existing intent
+### Tagging an Existing Intent
 
-You can also tag an existing intent on a session. This is useful if you want to tag an intent that you've already identified in a session.
+You can manually apply an already defined intent to any session. This is crucial for providing the examples needed for automatic tagging.
 
-## Setting up automatic monitoring
+## Setting up Automatic Intent Tagging
 
-Every intent can be converted into an "active" intent, meaning that new sessions will be automatically tagged with this intent.
+Once an intent is defined and has sufficient examples, you can enable automatic tagging:
 
-To enable automatic tagging, follow these steps:
-
-1. First, create a new user intent (using either method described above)
-2. Manually tag **at least 5 example sessions** with this intent
-3. On the Intents page, click the "Analyze" button and wait a few minutes.
-4. Once active, new incoming sessions will be automatically tagged (most sessions are tagged within 1 hour, all sessions are tagged within 24 hours)
+1.  Manually tag **at least 5 example sessions** with the desired intent. Providing diverse examples improves accuracy.
+2.  Navigate to the Intents page.
+3.  Click the "Analyze" button for the intent you want to activate.
+4.  Allow a few minutes for Melodi to build the model.
+5.  Once active, new incoming sessions will be automatically evaluated and tagged if they match the learned intent pattern (most sessions are tagged within 1 hour, but delays up to 24 hours are possible).
 
 ![Analyzing intent](/images/intent-active.png)
 
-Tags added by Melodi's AI are marked with a ✨ icon. You can hover over the tag to see who assigned it, and you can always remove a tag if it's incorrect.
+Tags added automatically by Melodi's AI are marked with a ✨ icon. You can always review and correct these tags manually.
 
 ![auto-and-manual-intents](/images/auto-and-manual-intents.png)
