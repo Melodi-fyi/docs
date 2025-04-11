@@ -43,7 +43,7 @@
   },
   "navigation": [
     {
-      "group": "Getting Started",
+      "group": "Getting started",
       "pages": [
         "getting-started/what-is-melodi",
         "getting-started/the-melodi-method",
@@ -52,7 +52,7 @@
       ]
     },
     {
-      "group": "Sending Data to Melodi",
+      "group": "Sending data to Melodi",
       "pages": [
         "integrating-melodi-analytics/overview",
         "integrating-melodi-analytics/api-access",
@@ -61,7 +61,7 @@
       ]
     },
     {
-      "group": "Melodi Intelligence & LLM Automated Evaluations",
+      "group": "Melodi intelligence & LLM automated evaluations",
       "pages": [
         "monitoring/intelligence-overview",
         "monitoring/session-outcome",
@@ -70,7 +70,7 @@
       ]
     },
     {
-      "group": "User Feedback, Human Review, and Data Labeling",
+      "group": "User feedback, human review, and data labeling",
       "pages": [
         "feedback-labeling/overview",
         "feedback-labeling/collecting-feedback",
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "group": "API Reference",
+      "group": "API reference",
       "pages": [
         "api-reference/create-thread",
         "api-reference/create-feedback",
