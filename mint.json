@@ -4,7 +4,7 @@
   "name": "Melodi Docs",
   "logo": {
     "dark": "/images/Melodi Logo (dark mode).png",
-    "light": "/images/Melodi Logo.png"
+    "light": "/images/MelodiLogo.png"
   },
   "favicon": "/melodi-favicon.png",
   "theme": "venus",
