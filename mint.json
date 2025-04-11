@@ -3,8 +3,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Melodi Docs",
   "logo": {
-    "dark": "/images/Melodi Logo (dark mode).png",
-    "light": "/images/MelodiLogo.png"
+    "dark": "/logo/Melodi Logo (dark mode).png",
+    "light": "/logo/Melodi-Logo.png"
   },
   "favicon": "/melodi-favicon.png",
   "theme": "venus",
