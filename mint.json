@@ -46,6 +46,7 @@
       "group": "Getting Started",
       "pages": [
         "getting-started/what-is-melodi",
+        "getting-started/the-melodi-method",
         "getting-started/quickstart",
         "getting-started/data-privacy"
       ]
@@ -79,7 +80,7 @@
       ]
     },
     {
-      "group": "Specific API Endpoints",
+      "group": "API Reference",
       "pages": [
         "api-reference/create-thread",
         "api-reference/create-feedback",
