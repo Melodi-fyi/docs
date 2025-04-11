@@ -1,0 +1,61 @@
+---
+title: 'The Melodi Method for user-driven AI improvement'
+description: 'A structured method for continuously improving your AI agent using Melodi.'
+icon: 'clipboard-list'
+iconType: 'regular'
+---
+
+## Beyond Technical Tweaks: A Product-Centric Approach
+
+Building and refining a successful AI agent is truly a team sport. Improving AI agents, especially sophisticated conversational ones, requires more than just tuning models or fixing bugs. It demands a continuous, structured approach focused on **delivering user value**. Product teams can sometimes lose sight of core product principles amidst complex ML projects.
+
+Melodi advocates for a method centered on:
+
+*   **Understanding User Goals:** What are users *really* trying to achieve?
+*   **Segmentation:** How do different user groups experience the agent?
+*   **Diverse Problem Types:** Recognizing that issues stem from various sources – content, design, prompts, product limitations, etc. – not just the ML model itself.
+
+This method helps teams diagnose problems accurately and assign ownership effectively.
+
+## The 5 Action Categories for Improvement
+
+Based on insights gathered using Melodi, the Melodi Method organizes improvement opportunities into five core categories:
+
+**1. Update Knowledge / Source Content**
+
+*   **Definition:** AI responses are incorrect, outdated, or incomplete due to issues in the underlying documentation or knowledge base used for retrieval (RAG).
+*   **Examples:** Missing API documentation, outdated troubleshooting steps, incorrect pricing info.
+*   **Typical Owners:** Content/Documentation Teams, Knowledge Management, CX Ops.
+*   **Melodi's Role:** Helps identify knowledge gaps through analysis of user queries, feedback mentioning incorrect info, or low Session Outcome scores on specific topics.
+
+**2. Adjust AI Behavior (Prompts/Models)**
+
+*   **Definition:** The AI's core logic, response generation, or output needs refinement via changes to prompts, model configuration, or fine-tuning.
+*   **Examples:** Improving tone, fixing repetitive fallbacks, better handling of complex questions, reducing hallucinations not caused by source content.
+*   **Typical Owners:** AI/ML Team, Prompt Engineers, LLM Ops.
+*   **Melodi's Role:** Surfaces patterns of problematic AI behavior through Issue Monitoring, feedback analysis, and analysis of low Session Outcome conversations. Provides curated datasets for fine-tuning ([Using Feedback Data for ML](/feedback-labeling/using-for-ml)).
+
+**3. Conversation Design & UX Improvements**
+
+*   **Definition:** The AI might be technically correct, but the interaction flow or presentation is confusing, awkward, or unhelpful.
+*   **Examples:** Breaking down long answers, clarifying fallback messages, adding guiding prompts, improving disambiguation flows.
+*   **Typical Owners:** Product Designers, Conversation Designers, UX Writers.
+*   **Melodi's Role:** Highlights user friction points through analysis of session transcripts, identification of loops or repeated questions (via Issues/Intents), and direct user feedback.
+
+**4. Product or System Changes**
+
+*   **Definition:** User frustration or confusion stems not from the AI itself, but from underlying issues or complexities in the main product or system the AI assists with.
+*   **Examples:** Confusing UI elements the AI tries to explain, bugs in the core product leading to support requests, complex authentication flows.
+*   **Typical Owners:** Core Product Managers, Engineering Teams.
+*   **Melodi's Role:** Identifies recurring user struggles related to specific product areas by analyzing User Intents, feedback themes, and common Issue triggers.
+
+**5. Support or Escalation Workflow Fixes**
+
+*   **Definition:** Issues arise from how the AI handles situations it *cannot* resolve, such as ineffective routing to human support or poor handoff procedures.
+*   **Examples:** Escalating too quickly/slowly, incorrect triage of issues, lack of context provided during handoff.
+*   **Typical Owners:** CX Ops, Support Teams, Product.
+*   **Melodi's Role:** Provides data on fallback rates, escalation patterns, and user feedback specifically related to support interactions, helping optimize the human-AI collaboration.
+
+## Implementing the Melodi Method
+
+By using Melodi's analytics and intelligence features to diagnose *which type* of problem is occurring, teams can route the issue to the correct owner and apply the most effective solution, leading to faster, more impactful improvements in AI agent performance and user satisfaction. 

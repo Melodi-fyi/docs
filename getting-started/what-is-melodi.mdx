@@ -4,34 +4,51 @@ icon: "circle-info"
 iconType: "regular"
 ---
 
-**Melodi is the essential platform for AI teams who want to enhance customer engagement.**
+**Melodi is the essential analytics platform for teams building and managing AI agents.**
 
-Unlike traditional product analytics tools that track screen-based clicks, Melodi is designed to track unique metrics for AI agents like trends in user behavior across high volumes of diverse conversations.
+Unlike traditional product analytics tools focused on screen-based interactions, Melodi is specifically designed to understand and improve AI agent performance and user experience by analyzing conversational data at scale.
 
-**Melodi is great for:**
+**Melodi helps:**
 
-* **Product Managers** who want to understand their customers and prioritize high-impact features to increase customer usage.
+*   **Product Managers** understand user behavior, measure satisfaction across all interactions, and prioritize high-impact agent improvements.
+*   **Operations Teams** monitor agent performance, track key metrics, and report on the success of AI initiatives.
+*   **Data Scientists & ML Engineers** access curated, production-grade datasets for fine-tuning, prompt engineering, evaluation, and custom model development.
 
-* **Operations Managers** who want to report on the success and engagement of AI initiatives.
+## Core Capabilities
 
-* **Data Scientists** who need quick access to the right datasets for few shot examples, fine-tuning, and custom testing.
+Melodi provides a suite of tools to monitor, analyze, and improve your AI agent:
 
-**Metrics Available in Melodi:**
+*   **Monitoring**: Track essential metrics like user engagement, retention rates, session volume, and user segmentation. Gain critical insights into how users interact with your agent over time.
 
-* **User engagement and retention**: Track metrics including active users, new user growth, and retention rates. Monitor customer engagement through total sessions, sessions per user, and session duration. These engagement metrics provide critical insights into the value users derive from your AI product.
+*   **[Melodi Intelligence & Automated Evaluations](/monitoring/intelligence-overview)**: Leverage automated LLM-based evaluations to gain deeper insights with minimal setup:
+    *   **[Session Outcome](/monitoring/session-outcome)**: Get an out-of-the-box estimate of user experience for *every* session, even without explicit feedback.
+    *   **[User Intents](/monitoring/user-intents)**: Automatically understand and segment *what* users are trying to accomplish.
+    *   **[Issue Monitoring](/monitoring/issues)**: Proactively track known problematic scenarios like hallucinations or user frustration.
 
-* **User intents**: Automatically identify what users are trying to do when they interact with your AI. These user intents can either manually or be automatically generated after a minimum volume of interactions. Examples of such intents are things like "troubleshoot integrations," "book an appointment," or "get a weather update." Understanding what your users are trying do to is critical for building a valuable AI tool and knowing if your model is working as expected.
+*   **[User Feedback, Human Review, and Data Labeling](/feedback-labeling/overview)**: Collect explicit user feedback (e.g., ratings, comments) and implicit signals via flexible APIs and components. Use the platform for internal human review and structured data labeling, turning raw interactions into valuable datasets for both product analysis and ML training.
 
-* **User feedback**: Collect direct feedback from users to understand how your AI models are performing and identify opportunities for improvement. This can be collected via the [Melodi feedback widget](/integrating-melodi-analytics/react-component) or through your own feedback UI with Melodi's [feedback API](/api-reference/create-feedback).
+## Key Data Concepts
 
-**Specific data you can track:**
+Melodi organizes data around these core concepts:
 
-* **Projects** are the top level container in Melodi. You can have multiple projects, each with their own threads, users, and feedback. In general, a project is a single product or feature.
+*   **Projects**: The top-level container, typically representing a single AI agent, product, or feature.
+*   **Threads**: Represent individual sessions or conversations, containing sequences of messages. Threads support multi-turn interactions and various message roles (user, assistant, RAG lookup, tool calls).
+*   **Messages**: The individual turns within a Thread, capturing content, role, type, and metadata.
+*   **Feedback**: Labels or ratings applied to Threads or Messages, either by end-users or internal reviewers. Can be customized beyond simple positive/negative ratings.
+*   **Users**: Represent end-users interacting with your agent, allowing for metadata tracking and segmentation.
 
-* **Threads** are a flexible data format that support messages with customizable roles, including user, AI response, or RAG lookup.
+## Melodi in the LLM Ops Landscape
 
-* **Feedback** can be added to threads to help you understand how users think about your AI models and identify opportunities for improvement.
+Melodi operates adjascent to the LLM Ops and AI Observability space, sharing goals with tools focused on tracking and improving AI agent performance. Where observability tools solve for engineering, Melodi solves for product and business owners.
 
-* **Users** can contain additional metadata like name, email, and company.
+**Alignment with Technical LLM Ops Tools:** Like many LLM infrastructure and observability platforms, Melodi provides visibility into agent behavior, monitors interactions, and helps identify areas for performance optimization and evaluation.
+
+**Melodi's Unique Focus:** Where Melodi distinguishes itself is through its **analytics-centric approach**. It emphasizes translating agent performance data into actionable insights for product strategy and user experience improvement. Key differentiators include:
+
+*   **Connecting AI to Business Outcomes:** Melodi connects technical agent behavior directly to user satisfaction, engagement metrics, and ultimately, business objectives.
+*   **Strategic Insights:** Beyond purely technical monitoring (e.g., latency, cost, trace debugging), Melodi delivers strategic insights valuable for product managers and leadership regarding user segmentation, adoption trends, and experience gaps.
+*   **Bridging Technical & Business:** Melodi is designed to be accessible and valuable for both technical teams (providing data for ML) and non-technical stakeholders (providing clear product and user insights).
+
+**Complementary Role:** Think of Melodi as providing the essential **analytics and strategic intelligence layer** within your LLM Ops stack. While other tools might focus deeply on the technical DevOps cycle (e.g., infrastructure monitoring, detailed tracing, deployment pipelines), Melodi focuses on the "why" – understanding the user impact and strategic direction – helping ensure your AI investments deliver tangible business value.
 
 <img height="200" src="https://framerusercontent.com/images/0niX254WiZdToUP68Cza3Z4xaIo.png?scale-down-to=1024" />
