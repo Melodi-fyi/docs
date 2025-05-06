@@ -1,21 +1,28 @@
 ---
-title: 'Customizing feedback types'
-description: 'Defining custom feedback types and scoring systems.'
+title: 'Customizing feedback'
+description: 'Defining custom feedback attributes and scoring systems.'
 icon: 'sliders'
 iconType: 'regular'
 ---
 
-By default, Melodi includes "Positive" and "Negative" feedback types. However, you can customize this entirely to match your specific evaluation needs within your project settings.
+Melodi uses a primary `feedbackType` which is typically "Positive" or "Negative". Beyond this, you can define custom **feedback attributes** to capture detailed evaluations tailored to your project's needs. These attributes are configured in your project settings.
 
-Define your own feedback types or scoring systems, such as:
+You can define various feedback attributes and their corresponding value sets, such as:
 
-*   **Star Ratings:** 1-5 stars
-*   **Quality Scores:** "Excellent," "Good," "Fair," "Poor"
-*   **Sentiment:** "Happy," "Neutral," "Frustrated"
-*   **Relevance:** "Relevant," "Partially Relevant," "Irrelevant"
-*   **Task Completion:** "Goal Achieved," "Goal Not Achieved"
-*   *Any other categorical or numerical scale relevant to your analysis.*
+*   **Attribute:** `Star Rating`
+    *   **Values:** 1, 2, 3, 4, 5 (stars)
+*   **Attribute:** `Quality Score`
+    *   **Values:** "Excellent", "Good", "Fair", "Poor"
+*   **Attribute:** `User Sentiment`
+    *   **Values:** "Happy", "Neutral", "Frustrated"
+*   **Attribute:** `Content Relevance`
+    *   **Values:** "Relevant", "Partially Relevant", "Irrelevant"
+*   **Attribute:** `Task Completion`
+    *   **Values:** "Goal Achieved", "Goal Not Achieved"
+*   *Any other categorical or numerical attribute relevant to your analysis (e.g., `Humor Level`: "High", `Issue Type`: "Hallucination").*
 
-This flexibility allows you to capture nuanced evaluations beyond simple binary feedback, tailoring the labeling process to your specific AI agent and goals.
+This flexibility with attributes allows you to capture nuanced evaluations beyond the binary `feedbackType`, tailoring the labeling process to your specific AI agent and goals.
 
-When feedback is collected via the API or React component, you will specify the appropriate custom feedback type you have configured. 
+When creating a feedback record, it's required to include either a `feedbackType` or at least one custom `attribute`. Providing both, or multiple attributes, is also supported.
+
+When feedback is collected via the API or React component, you will specify the `feedbackType` (e.g., "POSITIVE") and any relevant custom `attributes` you have configured (e.g., `{"Star Rating": 5, "Quality Score": "Excellent"}`). 
