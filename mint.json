@@ -85,7 +85,9 @@
         "api-reference/create-thread",
         "api-reference/create-feedback",
         "api-reference/create-user",
-        "api-reference/get-threads"
+        "api-reference/get-threads",
+        "api-reference/create-issue-association",
+        "api-reference/create-intent-association"
       ]
     }
   ],
