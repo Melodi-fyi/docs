@@ -1,0 +1,34 @@
+---
+title: Projects
+---
+
+Projects are the primary unit of organization inside Melodi. Each project normally represents **one concrete AI agent**—for example:
+
+* A customer-facing support copilot
+* An internal sales-assistant bot
+* A staging / QA clone of your production assistant
+
+Because of this, it’s common for the same company to maintain multiple projects, one per product and/or environment (e.g. *support-prod*, *support-qa*).
+
+## Creating a project
+
+1. Open the **Project overview** screen in the Melodi web application.
+2. Click **Add project**.
+3. Provide a name
+
+That’s it—your new project is ready to start receiving data.
+
+## How projects affect analytics
+
+All dashboards, charts, and metrics inside Melodi are automatically **scoped to the currently-selected project**. This lets you drill-down into the behaviour of a single agent or environment without noise from the rest of your organisation.
+
+However, **end-user records are cross-project**:
+
+* If the same user talks to multiple agents (or the same agent across environments) their entire history is visible from a single *user* page.
+* From a monitoring dashboard point-of-view you will still be looking at **one project at a time**.
+
+## Typical workflow
+
+1. Create a dedicated project for every AI agent you ship.
+2. Optionally create a second project for QA / staging traffic.
+3. Switch the active project from the header whenever you need to inspect a different agent.
