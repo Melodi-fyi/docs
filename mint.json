@@ -52,6 +52,10 @@
       ]
     },
     {
+      "group": "Web app configuration",
+      "pages": ["configuration/projects", "configuration/user-management"]
+    },
+    {
       "group": "Sending data to Melodi",
       "pages": [
         "integrating-melodi-analytics/overview",
@@ -79,6 +83,7 @@
         "feedback-labeling/using-for-ml"
       ]
     },
+
     {
       "group": "API reference",
       "pages": [
