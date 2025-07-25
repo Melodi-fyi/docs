@@ -1,0 +1,128 @@
+---
+title: "Get Memory"
+description: "Retrieve the most recent thread memory summary for an external user"
+openapi: GET /memory
+---
+
+## Overview
+
+The Get Memory API retrieves the most recent thread memory summary for a specified external user. This endpoint provides access to conversation context and summaries that have been stored by Melodi's intelligence system.
+
+## Authentication
+
+This endpoint requires a **Private API Key**. The API key can be passed as a header or query parameter:
+
+- **Header**: `Authorization: Bearer YOUR_API_KEY`
+- **Query Parameter**: `?apiKey=YOUR_API_KEY`
+
+For more information about API authentication, see [API Access](/integrating-melodi-analytics/api-access).
+
+## Request Parameters
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `userExternalId` | string | **Yes** | The external identifier for the user whose memory should be retrieved |
+
+## Response
+
+### Success Response (200)
+
+The API returns the memory summary from the most recent thread for the specified user.
+
+```json
+{
+  "userExternalId": "string",
+  "threadId": "number",
+  "threadExternalId": "string | null", 
+  "summary": "string",
+  "createdAt": "string"
+}
+```
+
+**Response Fields:**
+
+- `userExternalId` - The external identifier for the user
+- `threadId` - Internal thread identifier (number)
+- `threadExternalId` - External thread identifier (can be null if not provided when thread was created)
+- `summary` - The AI-generated memory summary content from the most recent thread
+- `createdAt` - ISO 8601 timestamp when the thread was created
+
+### Error Responses
+
+| Status Code | Description | Response Body |
+|-------------|-------------|---------------|
+| 400 | Missing required parameter | `{"error": "Missing required parameter: userExternalId"}` |
+| 401 | Invalid or missing API key | `{"error": "Unauthorized - Invalid or missing API key"}` |
+| 404 | User not found or no memory available | `{"error": "No user or no memory found"}` |
+
+## Usage Examples
+
+### cURL
+
+```bash
+curl -X GET "https://app.melodi.fyi/api/external/memory?userExternalId=user-123" \
+  -H "Authorization: Bearer YOUR_PRIVATE_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://app.melodi.fyi/api/external/memory"
+headers = {
+    "Authorization": "Bearer YOUR_PRIVATE_API_KEY",
+    "Content-Type": "application/json"
+}
+params = {
+    "userExternalId": "user-123"
+}
+
+response = requests.get(url, headers=headers, params=params)
+memory_data = response.json()
+```
+
+### TypeScript/JavaScript
+
+```typescript
+const response = await fetch(
+  "https://app.melodi.fyi/api/external/memory?userExternalId=user-123",
+  {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer YOUR_PRIVATE_API_KEY",
+      "Content-Type": "application/json",
+    },
+  }
+);
+
+const memoryData = await response.json();
+```
+
+## Example Response
+
+```json
+{
+  "userExternalId": "user-123",
+  "threadId": 456,
+  "threadExternalId": "thread-external-789",
+  "summary": "User discussed implementing a new authentication system for their web application. They're particularly interested in OAuth integration and session management best practices. Previous conversation covered JWT token implementation and security considerations.",
+  "createdAt": "2024-01-15T10:30:45.123Z"
+}
+```
+
+## Use Cases
+
+- **Context Retrieval**: Get conversation context when a user returns to continue a previous conversation
+- **Personalization**: Use memory summaries to personalize user experiences
+- **Integration**: Incorporate user memory into external systems or applications
+- **Analysis**: Access stored conversation context for analysis or reporting
+
+## Related APIs
+
+- [Create Thread](/api-reference/create-thread) - Create new threads that generate memory summaries
+- [Get Threads](/api-reference/get-threads) - Retrieve multiple threads for a user
+- [Create User](/api-reference/create-user) - Create users who can have memory summaries 

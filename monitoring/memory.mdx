@@ -1,0 +1,175 @@
+---
+title: 'Memory'
+description: 'AI-powered conversation memory that maintains context across user sessions'
+icon: "brain"
+iconType: "regular"
+---
+
+<Warning>
+**Beta Feature**: Memory is currently in beta. Features and API endpoints may change as we continue to improve the system based on user feedback.
+</Warning>
+
+## Overview
+
+Melodi Memory is an AI-powered feature that automatically generates and stores intelligent summaries of user conversations, enabling your AI agents to maintain context and continuity across multiple sessions with the same user.
+
+**Why use Memory?**
+
+- **Persistent Context**: Remember key details about users between conversations
+- **Personalized Experiences**: Provide more relevant and contextual responses based on conversation history
+- **Reduced Repetition**: Avoid asking users to re-explain their background or preferences
+- **Enhanced User Experience**: Create more natural, human-like interactions that build on previous conversations
+
+Memory works by analyzing completed conversations and extracting the most important information into concise, actionable summaries that can be retrieved when users return for future interactions.
+
+## How Memory Works
+
+### 1. Automatic Summary Generation
+
+When a conversation thread is completed, Melodi's AI analyzes the conversation and generates an intelligent summary that captures:
+
+- **Key User Context**: Important background information about the user
+- **Preferences & Requirements**: User preferences, needs, and specific requirements mentioned
+- **Previous Solutions**: What worked or didn't work in past interactions
+- **Follow-up Items**: Any pending tasks or future discussion topics
+
+### 2. Storage & Organization
+
+Memory summaries are automatically:
+- **Linked to Users**: Associated with the user's external ID for easy retrieval
+- **Timestamped**: Tracked with creation dates for temporal context
+- **Thread-Associated**: Connected to specific conversation threads for traceability
+
+### 3. Retrieval & Usage
+
+Memory can be accessed through:
+- **API Integration**: Programmatically retrieve memory summaries using the [Memory API](/api-reference/get-memory)
+- **Dashboard View**: Review memory summaries in the Melodi web interface
+- **Agent Integration**: Incorporate memory into your AI agent's context for personalized responses
+
+## Setting Up Memory
+
+### Prerequisites
+
+Memory automatically works with your existing Melodi setup. You just need:
+
+1. **Active Threads**: Conversations logged through the [Create Thread API](/api-reference/create-thread)
+2. **User Identification**: Users created with external IDs via the [Create User API](/api-reference/create-user)
+3. **Complete Conversations**: Threads with meaningful conversation content for the AI to summarize
+
+### Enabling Memory (Beta)
+
+Memory is automatically enabled for all accounts during the beta period. If you don't see memory summaries being generated, please contact [support](mailto:info@melodi.app).
+
+## Using the Memory API
+
+### Retrieving User Memory
+
+Use the Memory API to get the most recent conversation summary for any user:
+
+```bash
+curl -X GET "https://app.melodi.fyi/api/external/memory?userExternalId=user-123" \
+  -H "Authorization: Bearer YOUR_PRIVATE_API_KEY"
+```
+
+### Example Response
+
+```json
+{
+  "userExternalId": "user-123",
+  "threadId": 456,
+  "threadExternalId": "support-session-789",
+  "summary": "User is implementing OAuth authentication for their e-commerce platform. They're using Node.js with Express and need help with session management. Previous discussion covered JWT token security and they decided to use refresh tokens for better security.",
+  "createdAt": "2024-01-15T10:30:45.123Z"
+}
+```
+
+### Integrating Memory into Your Agent
+
+Here's how you might use memory in your AI agent:
+
+```python
+import requests
+from melodi import MelodiClient
+
+def get_user_context(user_external_id):
+    """Retrieve user memory to provide context for new conversations"""
+    memory_response = requests.get(
+        f"https://app.melodi.fyi/api/external/memory?userExternalId={user_external_id}",
+        headers={"Authorization": f"Bearer {MELODI_API_KEY}"}
+    )
+    
+    if memory_response.status_code == 200:
+        memory_data = memory_response.json()
+        return f"Previous conversation context: {memory_data['summary']}"
+    
+    return "No previous conversation history available."
+
+def create_personalized_prompt(user_input, user_external_id):
+    """Create an AI prompt that includes user memory for context"""
+    context = get_user_context(user_external_id)
+    
+    prompt = f"""
+    {context}
+    
+    Current user message: {user_input}
+    
+    Please provide a helpful response that takes into account the user's previous conversation history.
+    """
+    
+    return prompt
+```
+
+## Best Practices
+
+### 1. Memory-Aware Conversation Design
+
+- **Reference Previous Context**: When memory is available, acknowledge previous conversations naturally
+- **Progressive Enhancement**: Design your agent to work both with and without memory context
+- **Privacy Considerations**: Be transparent about what information is remembered
+
+### 2. API Integration Patterns
+
+- **Check for Memory**: Always attempt to retrieve memory before starting new conversations
+- **Graceful Fallbacks**: Handle cases where no memory is available (new users, privacy settings)
+- **Memory Updates**: Memory is automatically updated as new conversations occur
+
+### 3. User Experience
+
+- **Transparency**: Let users know when you're using information from previous conversations
+- **Control**: Consider providing users with ways to view or clear their memory if needed
+- **Contextual Relevance**: Use memory to enhance conversations, not overwhelm them with old information
+
+## Memory Quality & Accuracy
+
+### What Makes Good Memory
+
+Melodi's AI focuses on extracting:
+- **Actionable Information**: Details that help improve future interactions
+- **User Preferences**: Consistent patterns in user behavior and choices
+- **Technical Context**: Relevant technical details for support or development conversations
+- **Relationship Building**: Information that helps build rapport and trust
+
+### Limitations During Beta
+
+- **Processing Time**: Memory summaries may take a few minutes to hours to generate after conversation completion
+- **Summary Length**: Currently optimized for concise summaries; very long conversations may have details condensed
+- **Language Support**: Primary optimization for English conversations
+- **Update Frequency**: Memory reflects the most recent thread only; older conversations aren't automatically merged
+
+## Getting Help
+
+Memory is a beta feature and we're actively seeking feedback:
+
+- **Feature Requests**: Share ideas for how memory could better serve your use case
+- **Quality Issues**: Report problems with memory accuracy or relevance
+- **Integration Support**: Get help integrating memory into your specific workflow
+
+Contact us at [info@melodi.app](mailto:info@melodi.app) or through the support channel in your Melodi dashboard.
+
+## Related Features
+
+- **[Session Outcome](./session-outcome)**: Track how memory affects conversation quality
+- **[User Intents](./user-intents)**: Understand what users are trying to accomplish across sessions
+- **[Get Memory API](/api-reference/get-memory)**: Technical documentation for the Memory API
+- **[Create Thread API](/api-reference/create-thread)**: How to create conversations that generate memory 
