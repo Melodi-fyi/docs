@@ -65,6 +65,10 @@
       ]
     },
     {
+      "group": "Memory",
+      "pages": ["monitoring/memory"]
+    },
+    {
       "group": "Melodi intelligence & LLM automated evaluations",
       "pages": [
         "monitoring/intelligence-overview",
@@ -91,6 +95,7 @@
         "api-reference/create-feedback",
         "api-reference/create-user",
         "api-reference/get-threads",
+        "api-reference/get-memory",
         "api-reference/create-issue-association",
         "api-reference/create-intent-association",
         "api-reference/upsert-issue",
