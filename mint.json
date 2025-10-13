@@ -92,5 +92,7 @@
   "footerSocials": {
     "github": "https://github.com/melodi-fyi",
     "linkedin": "https://www.linkedin.com/company/melodi-fyi"
-  }
+  },
+  "customCSS": "/custom.css",
+  "customJS": "/banner.js"
 }
